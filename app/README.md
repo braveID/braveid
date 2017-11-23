@@ -1,3 +1,22 @@
+## Setup
+
+### Pre-requisitos
+* React Native Debugger - https://github.com/jhen0409/react-native-debugger
+* Expo XDE - https://expo.io/tools
+
+## Rodando
+```
+cd braveid/app
+npm install
+```
+Em seguida, abra o Expo XDE e abra o projeto nessa mesma pasta, nele vc pode abrir os emuladores
+Apertando CMD + CONTROL + Z abre o menu de opções do Expo, onde vc pode ligar o remote JS Debugging.
+
+No React Native Debugger, aperte CMD + T e coloque a porta 19001 para debugar
+
+___
+
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
