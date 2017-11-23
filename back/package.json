@@ -1,0 +1,43 @@
+{
+  "name": "lapag-rest",
+  "version": "1.0.0",
+  "description": "REST API da LaPag",
+  "main": "index.js",
+  "scripts": {
+    "start": "export NODE_ENV=development && pm2-dev start server.js"
+  },
+  "author": "Marcelo Prado",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "celebrate": "^7.0.2",
+    "check": "^1.0.0",
+    "config": "^1.26.1",
+    "dotenv": "^4.0.0",
+    "errorhandler": "^1.5.0",
+    "eslint-plugin-import": "^2.7.0",
+    "express": "^4.15.3",
+    "express-xml-bodyparser": "^0.3.0",
+    "joi-date-extensions": "^1.0.2",
+    "joigoose": "^2.0.0",
+    "js2xmlparser": "^3.0.0",
+    "later": "^1.2.0",
+    "mongoose": "^4.10.5",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "simpl-schema": "^0.3.0",
+    "throw.js": "^3.0.1",
+    "underscore": "^1.8.3",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "faker": "^4.1.0",
+    "mocha": "^3.4.2",
+    "pm2": "^2.5.0",
+    "snazzy": "^7.0.0",
+    "standard": "*"
+  }
+}
