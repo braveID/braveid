@@ -89,7 +89,7 @@ async function logIn() {
  */
 async function getProfilePicUrl(token, userId) {
     const res = await fetch(`https://graph.facebook.com/${userId}/picture?access_token=${token}`);
-    const response = await res.json();
+    const response = await res;
     console.log(response)
 }
 
