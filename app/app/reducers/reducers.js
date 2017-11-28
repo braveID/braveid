@@ -3,6 +3,7 @@ import { NavigationActions, StackNavigator } from 'react-navigation'
 import { AppNavigator, initialState } from '../store';
 
 export function count(state = initialState, action){
+    console.log('REDUCER',state)
     switch(action.type){
         case types.INCREMENT_COUNT:
             return state += 1

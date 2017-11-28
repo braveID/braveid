@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, WebView, ListView, ListRenderItem, Button} from
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators } from '../actions'
-
 class Profile extends Component {
     constructor(props){
         super(props)
@@ -31,7 +30,6 @@ class Profile extends Component {
 
         return (
             <View style={styles.container}>
-            <Text style={{color : 'white', fontSize: 25}}>LALALALAto BraveID </Text>
                 <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID </Text>
                 <Button title='btn' onPress={() => {this.incrementCount()}}> Clica aqui </Button>
                 <Button title='btn' onPress={() => {this.props.increment()}}> Clica aqui </Button>

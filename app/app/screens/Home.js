@@ -17,6 +17,12 @@ class Home extends Component {
 
     static navigationOptions = {
         title: 'Welcome',
+        // headerStyle: {
+        //     backgroundColor: 'gray'
+        //   },
+        //   headerTitleStyle: {
+        //     color: '#fff'
+        //   }
     };
 
     componentWillMount() {
@@ -31,7 +37,7 @@ class Home extends Component {
     _handlePressButtonAsync = async () => {
         let result = await WebBrowser.openBrowserAsync('https://expo.io');
         this.setState({ result });
-    }
+    }   
 
     render() {
         
@@ -55,7 +61,7 @@ class Home extends Component {
                     title="Open WebBrowser"
                     onPress={this._handlePressButtonAsync}
                 />
-                <Text>{this.state.result && JSON.stringify(this.state.result)}</Text>
+                <Text style={{color : 'white'}}>{this.state.result && JSON.stringify(this.state.result)}</Text>
             </View>
         );
     }
