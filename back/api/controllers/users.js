@@ -10,9 +10,10 @@ const User = require('../models/user')
  */
 router.post('/signup', celebrate({
   body: Joi.object().keys({
+    facebook_id: Joi.string().required(),
     username: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().required()
+    real_name: Joi.string().required(),
+    profile_pic_url: Joi.string().required()
   })
 }), (req, res) => {
   const userParams = req.body
@@ -39,7 +40,7 @@ router.post('/signup', celebrate({
  */
 router.post('/login', celebrate({
   body: Joi.object().keys({
-    username: Joi.string(),
+    facebook_id: Joi.string(),
     email: Joi.string().email(),
     password: Joi.string().required()
   })
