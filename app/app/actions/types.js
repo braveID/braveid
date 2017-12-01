@@ -1,3 +1,7 @@
 export const INCREMENT_COUNT = 'INCREMENT_COUNT'
 export const NAVIGATE = 'Navigation/NAVIGATE'
 export const NAVIGATE_BACK = 'Navigation/BACK'
+export const NAVIGATION_RESET = 'Navigation/RESET'
+export const SET_USER = 'SET_USER'
+export const LOGOUT = 'LOGOUT'
+export const LOGIN = 'LOGIN'

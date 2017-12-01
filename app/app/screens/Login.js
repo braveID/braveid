@@ -1,16 +1,18 @@
 import React,{ Component } from 'react'
 import { StackNavigator } from 'react-navigation';
 import { StyleSheet, Text, View, WebView, ListView, ListRenderItem, Button} from 'react-native';
-import { connect } from 'react-redux'
+import { connect, MapStateToProps } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators } from '../actions'
+
+
 class Profile extends Component {
     constructor(props){
         super(props)
     }
 
     static navigationOptions = {
-        title: 'Profile',
+        title: 'Login',
     };
 
     incrementCount(){
@@ -30,9 +32,13 @@ class Profile extends Component {
 
         return (
             <View style={styles.container}>
-                <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID </Text>
+                <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID - Login </Text>
                 <Button title='btn' onPress={() => {this.incrementCount()}}> Clica aqui </Button>
-                <Button title='btn' onPress={() => {this.props.increment()}}> Clica aqui </Button>
+                <Button title='NAVIGATE' onPress={() => {this.props.navigate('Home',{ id : 'EAE'})}}></Button>
+                <Button title='LOGIN' onPress={() => { 
+                    this.props.setUser({ name : 'seila', id : 1221 })
+                    this.props.navigate('Profile',{ name : 'seila', id: 1221 })
+                }}/>
             </View>
         );
     }
@@ -40,5 +46,6 @@ class Profile extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators,dispatch)
-  }
+}
+
 export default connect(() => { return {} }, mapDispatchToProps)(Profile);
