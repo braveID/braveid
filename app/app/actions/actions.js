@@ -8,6 +8,13 @@ export function increment(){
     }
 }
 
+export function getSteam(){
+    return {
+        type : types.GET_STEAM,
+        
+    }
+}
+
 export function changeScreen(screenName,params){
     console.log('Switching to',screenName,params)
     return {

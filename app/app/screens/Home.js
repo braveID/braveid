@@ -16,13 +16,10 @@ class Home extends Component {
     }
 
     static navigationOptions = {
-        title: 'Welcome',
-        // headerStyle: {
-        //     backgroundColor: 'gray'
-        //   },
-        //   headerTitleStyle: {
-        //     color: '#fff'
-        //   }
+        title: 'BraveIDb',
+        headerStyle: {
+
+          }
     };
 
     componentWillMount() {
@@ -35,7 +32,7 @@ class Home extends Component {
     }
 
     _handlePressButtonAsync = async () => {
-        let result = await WebBrowser.openBrowserAsync('https://expo.io');
+        let result = await WebBrowser.openBrowserAsync('https://google.com.br');
         this.setState({ result });
     }   
 
@@ -44,7 +41,7 @@ class Home extends Component {
         const styles = StyleSheet.create({
             container: {
                 flex: 1,
-                backgroundColor: 'black',
+                backgroundColor: 'gray',
                 alignItems: 'center',
                 justifyContent: 'center',
             },
@@ -53,8 +50,8 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID </Text>
-                <Button title='increment' onPress={() => {this.incrementCount()}}> Inc </Button>
-                <Button title='log store' onPress={() => {console.log(store.getState())}}> Log store </Button>
+                {/* <Button title='increment' onPress={() => {this.incrementCount()}}> Inc </Button> */}
+                {/* <Button title='log store' onPress={() => {console.log(store.getState())}}> Log store </Button> */}
                 <Button title='navigate' onPress={() => {this.props.changeScreen('Profile')}}> Navigate </Button>
                 <Button title='Facebook' onPress={() => {logIn()}}> Navigate </Button>
                 <Button
