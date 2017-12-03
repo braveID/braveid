@@ -35,7 +35,7 @@ class Home extends Component {
     }
 
     _handlePressButtonAsync = async () => {
-        let result = await WebBrowser.openBrowserAsync('https://expo.io');
+        let result = await WebBrowser.openBrowserAsync('http://localhost:3000/steamAuth/steam');
         this.setState({ result });
     }   
 

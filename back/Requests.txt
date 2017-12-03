@@ -1,0 +1,81 @@
+O que pegar de cada API? MVP!!
+
+Steam - key=8DD3D47C1DFB6EA97EA7F6665C4FBA20, id=76561197996048272
+
+GetPlayerSummaries (steamid)
+http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DD3D47C1DFB6EA97EA7F6665C4FBA20&steamids=76561197960435530
+Retorna o perfil básico da Steam, contendo de importante:
+steamid, nome da pessoa, url do perfil da steam, url do avatar
+    "steamid": "76561197960435530",
+    "personaname": "Robin",
+    "profileurl": "http://steamcommunity.com/id/robinwalker/",
+    "avatarfull": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/f1/f1dd60a188883caf82d0cbfccfe6aba0af1732d4_full.jpg",
+    "realname": "Robin Walker",
+
+GetOwnedGames (steamid)
+http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=8DD3D47C1DFB6EA97EA7F6665C4FBA20&steamid=76561197960434622&format=json
+Retorna quantos jogos ele tem, uma lista do id dos jogos e quanto jogou (forever/ultimas 2 semanas)
+game_count, games[{appid, playtime_forever, playtime_2weeks}]
+
+GetRecentlyPlayedGames (steamid)
+http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=8DD3D47C1DFB6EA97EA7F6665C4FBA20&steamid=76561197996048272&format=json
+Retorna os jogos jogados nas ultimas 2 semanas
+total de jogos, cada jogo tem seu id, nome, playtime_2weeks, playtime_forever, url do icone e url da imagem
+imagem pode ser acessada usando http://media.steampowered.com/steamcommunity/public/images/apps/   APPID/URL DO ICONE OU IMAGEM.jpg
+    "appid": 730,
+        "name": "Counter-Strike: Global Offensive",
+        "playtime_2weeks": 582,
+        "playtime_forever": 91903,
+        "img_icon_url": "69f7ebe2735c366c65c0b33dae00e12dc40edbe4",
+        "img_logo_url": "d0595ff02f5c79fd19b06f4d6165c3fda2372820"
+
+GetPlayerBans (steamid)
+http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=8DD3D47C1DFB6EA97EA7F6665C4FBA20&steamids=76561197996048272
+Retorna se o jogador foi banido por hack ou qualquer coisa do tipo
+Exemplo: "SteamId": "76561197996048272",
+			"CommunityBanned": false,
+			"VACBanned": false,
+			"NumberOfVACBans": 0,
+			"DaysSinceLastBan": 0,
+			"NumberOfGameBans": 0,
+			"EconomyBan": "none"
+
+
+---------------------------------------------------------------------------------
+LoL - KEY MUDA TODO DIA - SummonerName=coltshot
+
+GetSummonerByName (nickname)
+https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/coltshot?api_key=RGAPI-b731d4e8-32e8-4b48-9275-9a3f9a0a09d7
+Retorna informações do jogador baseado no nome
+importantes:
+    "profileIconId": 3006, (id da imagem que ele tem no perfil do lol)
+    "name": "coltshot",
+    "summonerLevel": 30,
+    "accountId": 663093, (importante para outras requests)
+    "id": 647588, (importante para outras requests)
+
+
+GetRecent20Matches (accountId)
+https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/663093/recent?api_key=RGAPI-b731d4e8-32e8-4b48-9275-9a3f9a0a09d7
+Retorna as últimas 20 partidas jogadas, com isso podemos pegar com que personagem ele mais joga, que rota (top,mid,bot) ele mais joga, entre outras infos
+"matches": [
+        {
+            "lane": "BOTTOM", (rota)
+            "gameId": 1222967316,
+            "champion": 40, (id do campeao jogado)
+            "queue": 430,
+            "role": "DUO_SUPPORT", (papel que teve (suporte no caso))
+            "season": 9
+        },
+
+GetChampionById (id - champion)
+https://br1.api.riotgames.com/lol/static-data/v3/champions/40?locale=pt_BR&api_key=RGAPI-b731d4e8-32e8-4b48-9275-9a3f9a0a09d7
+Retorna o personagem que a pessoa jogou
+    "title": "a Fúria da Tormenta",
+    "name": "Janna",
+    "key": "Janna",
+    "id": 40
+
+
+
+
