@@ -35,3 +35,10 @@ export function login(){
         type : types.LOGIN
     }
 }
+
+// export function setNavParams(params = {}){
+//     return {
+//         type : types.SET_NAVIGATION_PARAMS,
+//         params : params
+//     }
+// }

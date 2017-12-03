@@ -40,6 +40,17 @@ export function navigation(state = initialState, action){
                 NavigationActions.navigate({ routeName: 'Login' })
                 ]
             }))
+        
+        case types.SET_NAVIGATION_PARAMS:
+            console.log('ACTION',state,action)
+            let newState = AppNavigator.router.getStateForAction(
+                NavigationActions.setParams({
+                    params: action.params,
+                    key : action.key,
+                }),state
+            )
+            console.log(newState)
+            return newState
 
         default:
             return state
