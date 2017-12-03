@@ -7,7 +7,10 @@ import { ActionCreators } from '../actions'
 import { navigate } from '../actions/actions';
 import { Constants } from 'expo'
 import { SearchBar } from 'react-native-elements'
-// import { debounce } from 'lodash'
+import { debounce } from 'lodash'
+import { AuthSession } from 'expo';
+
+import SearchResults from '../components/SearchResults';
 
 // header : <Text style={{ backgroundColor : 'blue', height: Constants.statusBarHeight + 50 }}> Let there be light </Text>,
  
@@ -19,25 +22,28 @@ class Profile extends Component {
             showSearchModal : false,
             profileSearchField : ''
         }
+        this.delayedSearch = debounce(this.searchUsers,350)
 
     }
 
     static navigationOptions = (props) => {
-        console.log('=================',props)
         const { params = {} } = props.navigation.state
         return {
             title : 'profile',
             header : 
-                <SearchBar 
+                <SearchBar
+                    ref={(search) => {params.getSearchBar ? params.getSearchBar(search) : ()=>{}}}            
                     containerStyle={{
                         justifyContent:'flex-end',
-                        marginTop:Constants.statusBarHeight,
+                        marginTop:Constants.statusBarHeight - 5,
                         backgroundColor:'black'
                     }} 
                     inputStyle={{
-                        textAlign:'center'
+                        textAlign:'center',
+                        color: magenta
                     }}
                     placeholder={params.name}
+                    clearIcon={{ color: '#86939e', name: 'clear' }}
                     onChangeText={(text) => {
                         params.onInputChange(text)
                     }}
@@ -61,11 +67,31 @@ class Profile extends Component {
     }
     
     componentDidMount(){
-        this.props.navigation.setParams({ onInputChange : this.onSearchBarChange.bind(this)});                
+        this.props.navigation.setParams({ 
+            onInputChange : this.onSearchBarChange.bind(this),
+            getSearchBar : this.getSearchBar.bind(this)
+        })          
+    }
+    
+    getSearchBar(bar){
+        console.log('got the bar',bar)
+        this.searchBar = bar
+    }
+
+    searchUsers(){
+        if (this.state.profileSearchField != ''){
+            this.props.searchUsers(this.state.profileSearchField)            
+        }
     }
 
     onSearchBarChange(text) {
         this.setState({ profileSearchField : text })
+        this.delayedSearch()
+    }
+
+    clearSearch = () => {
+        this.setState({ profileSearchField : '' })
+        this.searchBar.clearText()
     }
 
     render() {
@@ -73,9 +99,10 @@ class Profile extends Component {
             container: {
                 flex: 1,
                 backgroundColor: '#2c2f33',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'center',
-                flexDirection : 'column'
+                flexDirection : 'column',
+                height: 2000
             },
             backgroundImage: {
                 flex: 1,
@@ -95,55 +122,70 @@ class Profile extends Component {
             } else return null                   
         }
 
+                
         return (
-            <View style={styles.container}>
+            <View style={{flex:1}}>
                 <StatusBar
                     barStyle="light-content"
                 />
-                    <ScrollView style={{flex:1, width : '100%'}} contentContainerStyle={{ flex : 1 }}>
-                    <View style={{
-                        backgroundColor : '#99aab5',
-                        flex: 1,
-                        flexDirection : 'row',
-                        justifyContent: 'center',
-                        alignItems : 'center',
-                        width : '100%'
-                    }}>
+                { this.state.profileSearchField != '' 
+                ? <SearchResults clear={this.clearSearch} search={this.state.profileSearchField}/> : null }           
+
+                <ScrollView onTouchStart={() => {
+                    this.setState({profileSearchField : ''})
+                    this.searchBar ? this.searchBar.clearText() : null
+                }} 
+                    style={{backgroundColor: '#2c2f33',width : '100%', height: 2000, flex: 1}}
+                >
+
+                    <View style={{height: 230, width: '100%'}}>
+                        <Image 
+                            source={{ uri: 'http://metrograph.com/uploads/films/spirited-1459547307-726x388.jpg' }}
+                            style={{ width: '100%', height: 150}}                            
+                        />
                         <Image 
                             source={{uri: 'http://2.bp.blogspot.com/-xJ4YrwmanWs/Vay6FcjgvfI/AAAAAAAATJU/_fidk6LhbxU/s1600/tumblr_nqox4gcyyg1r1636lo1_500.png'}} 
-                            style={{ width: 120, height: 120, borderRadius: 60, zIndex: 10, top : 80, borderColor:'#c93871', borderWidth: 5,}}
+                            style={{ width: 120, height: 120,alignSelf: 'center', borderRadius: 60, zIndex: 10, top : -50, borderColor:'#c93871', borderWidth: 3,}}
                         />
                     </View>
 
-                    <View style={{flex: 1, top: 70, alignItems:'center'}}>
+                    <View style={{alignItems: 'center', width: '100%'}}>
                         <Text style={{color : 'white', fontSize: 30}}> {this.props.navigation.state.params.name} </Text>
-                        <Button title='btn' onPress={() => {
-                            this.props.navigation.setParams({ onInputChange : this.onSearchBarChange.bind(this), name : 'fred'});        
-                        }}>
-                        </Button>
-                        <Text> {this.state.profileSearchField} </Text>
-                        <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
                     </View>
 
-                    <View style={{flex: 1, alignItems:'center'}}>
-                        <Text style={{color : 'white', fontSize: 30}}> {this.props.navigation.state.params.name} </Text>
-                        <Button title='btn' onPress={() => {
-                            this.props.navigation.setParams({ onInputChange : this.onSearchBarChange.bind(this), name : 'fred'});        
-                        }}>
-                        </Button>
-                        <Text> {this.state.profileSearchField} </Text>
-                        <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
+                    <View style={{ width: '100%'}}>
+                        <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Steam </Text>
+                        <View style={{backgroundColor:'#36393e',height:150}}>
+                            <Button title='LOGIN TO STEAM'></Button>
+                            <Text> {this.state.profileSearchField} </Text>                
+                        </View>
                     </View>
+
+                    <View style={{ width: '100%'}}>
+                        <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Battle.NET </Text>
+                        <View style={{backgroundColor:'#36393e',height:150}}>
+                            <Text> {this.state.profileSearchField} </Text>                
+                        </View>
+                    </View>
+
+                    <View style={{ width: '100%'}}>
+                        <Text style={{color : magenta, fontSize: 35, fontWeight: 'bold', left:10}}> League Of Legends </Text>
+                        <View style={{backgroundColor:'#36393e',height:150}}>
+                            <Text> {this.state.profileSearchField} </Text>                
+                        </View>
+                    </View>
+                    <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
 
                 </ScrollView>
-                {searchModal()}
 
             </View>
-        );
+        )
+
+            
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators,dispatch)
   }
-export default connect(mapStateToProps = (state,props) => { return {user : state.user } }, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps = (state,props) => { return {user : state.user} }, mapDispatchToProps)(Profile);

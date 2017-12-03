@@ -36,6 +36,22 @@ export function login(){
     }
 }
 
+export function showResults(users){
+    return {
+        type : 'OBTAINED_USERS',
+        users : [...users.results]
+    }
+}
+
+export const searchUsers = (query) => async dispatch => {
+        dispatch({type : 'SEARCH_USERS'})
+        let res = await fetch('https://randomuser.me/api/?results=10',{
+            method : 'get'
+        })
+        let data = await res.json()
+        dispatch(showResults(data))
+    }
+
 // export function setNavParams(params = {}){
 //     return {
 //         type : types.SET_NAVIGATION_PARAMS,

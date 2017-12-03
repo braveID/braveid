@@ -24,7 +24,7 @@ export const AppNavigator = StackNavigator(routes)
 
 const config = {
   key: 'root',
-  blacklist : ['navigation'],
+  blacklist : ['navigation','userSearchResults'],
   storage,
 }
 
@@ -33,7 +33,8 @@ export const initialState = {
   navigation : AppNavigator.router.getStateForAction(
       AppNavigator.router.getActionForPathAndParams('Login')
   ),
-  user : null
+  user : null,
+  userSearchResults : []
 }
 
 const combinedReducers = persistCombineReducers(config,Reducers)

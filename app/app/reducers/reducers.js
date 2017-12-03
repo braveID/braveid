@@ -70,3 +70,12 @@ export function user(state = initialState, action){
     }
 }
 
+export const userSearchResults = (state = initialState, action) => {
+    switch (action.type) {
+        case 'OBTAINED_USERS': 
+            return action.users 
+        default:
+            return state;
+    }
+};
+
