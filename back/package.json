@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "REST API da LaPag",
   "main": "index.js",
-  "scripts": {
-    "start": "export NODE_ENV=development && pm2-dev start server.js"
-  },
   "author": "Marcelo Prado",
   "license": "ISC",
   "dependencies": {
