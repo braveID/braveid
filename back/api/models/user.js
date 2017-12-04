@@ -37,6 +37,14 @@ exports.findByUsername = (username, next) => {
     .catch(err => next(err))
 }
 
+exports.findByFacebookID = (facebook_id, next) => {
+  User.findOne({ facebook_id }).exec()
+    .then((user) => {
+      return next(null, user)
+    })
+    .catch(err => next(err))
+}
+
 /**
  * Insere um novo usuário no banco de dados
  * @param {[Object]} fields campos do novo usuário

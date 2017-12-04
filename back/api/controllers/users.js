@@ -30,8 +30,7 @@ router.post('/signup', celebrate({
 
     return res.json({
       ok: true,
-      response
-    })
+    response})
   })
 })
 
@@ -59,8 +58,7 @@ router.post('/login', celebrate({
       if (response.password === body.password) {
         return res.json({
           ok: true,
-          response
-        })
+        response})
       }
       return res.json({
         ok: false,
@@ -79,8 +77,7 @@ router.post('/login', celebrate({
       if (response.password === body.password) {
         return res.json({
           ok: true,
-          response
-        })
+        response})
       }
       return res.json({
         ok: false,
@@ -89,5 +86,30 @@ router.post('/login', celebrate({
     })
   }
 })
+
+// Rota que busca usuario pelo facebook ID
+router.post('/searchID', celebrate({
+  body: Joi.object().keys({
+    facebook_id: Joi.string().required()
+  })
+}), (req, res) => {
+  const body = req.body
+  User.findByFacebookID(body.facebook_id, (err, response) => {
+    if (err) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    if (response === null) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    return res.json({
+      ok: true,
+    response})
+  })})
 
 module.exports = router
