@@ -1,10 +1,11 @@
-const key = 'RGAPI-ec4221fa-97ac-4723-bc89-1b672772dbda';
-var summonerName = 'coltshot';
+const fetch = require('node-fetch')
+const key = 'RGAPI-e127b4fa-7f69-436a-a19d-4d76c30e83c8';
+// var summonerName = 'coltshot';
 
 
-export default window.lol = {
+module.exports = {
 //para que todos os outros rodem, precisa do summonerID, entao vamos rodar antes
-getSummonerId() {
+getSummonerId(summonerName) {
     var serviceProfile = {};
     fetch('https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/'+summonerName+'?api_key='+key)
     .then(res => res.json())
@@ -15,24 +16,26 @@ getSummonerId() {
     })
 },
 
-getLolInfo(summonerId, accountId) {
+getLolInfo(summonerName, summonerId, accountId, callback) {
     var serviceProfile = {};
+    console.log("entrounolol")
+
     var getSummonerByName = fetch('https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/'+summonerName+'?api_key='+key)
         .then(function(response) {
             return response.json()
         });
 
-    var getLeague = fetch('https://br1.api.riotgames.com/lol/league/v3/positions/by-summoner/'+serviceProfile.serviceId+'?api_key='+key)
+    var getLeague = fetch('https://br1.api.riotgames.com/lol/league/v3/positions/by-summoner/'+summonerId+'?api_key='+key)
         .then(function(response) {
             return response.json()
         });
 
-    var getLast20Matches = fetch('https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/'+serviceProfile.serviceSecondaryId+'/recent?api_key='+key)
+    var getLast20Matches = fetch('https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/'+accountId+'/recent?api_key='+key)
         .then(function(response) {
             return response.json()
         });
 
-    var getChampionMasteries = fetch('https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/'+serviceProfile.serviceId+'?api_key='+key)
+    var getChampionMasteries = fetch('https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/'+summonerId+'?api_key='+key)
         .then(function(response) {
             return response.json()
         });
@@ -51,6 +54,8 @@ getLolInfo(summonerId, accountId) {
             serviceProfile.masteries.first = combinedData.getChampionMasteries[0]
             serviceProfile.masteries.second = combinedData.getChampionMasteries[1]
             serviceProfile.masteries.third = combinedData.getChampionMasteries[2]
+            console.log('Fetched LoL information')
+            callback(serviceProfile)
         });
     
     return combinedData;
