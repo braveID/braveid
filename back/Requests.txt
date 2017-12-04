@@ -68,6 +68,19 @@ Retorna as últimas 20 partidas jogadas, com isso podemos pegar com que personag
             "season": 9
         },
 
+GetChampionMasterys
+https://br1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/647588?api_key=RGAPI-ec4221fa-97ac-4723-bc89-1b672772dbda
+Retorna os campeões com os quais o jogador tem maior experiência.
+"championLevel": 5,
+"chestGranted": false,
+"championPoints": 22760,
+"championPointsSinceLastLevel": 1160,
+"playerId": 647588,
+"championPointsUntilNextLevel": 0,
+"tokensEarned": 0,
+"championId": 51,
+"lastPlayTime": 1498602166000
+
 GetChampionById (id - champion)
 https://br1.api.riotgames.com/lol/static-data/v3/champions/40?locale=pt_BR&api_key=RGAPI-b731d4e8-32e8-4b48-9275-9a3f9a0a09d7
 Retorna o personagem que a pessoa jogou
