@@ -30,7 +30,7 @@ router.post('/signup', celebrate({
 
     return res.json({
       ok: true,
-    response})
+      response})
   })
 })
 
@@ -58,7 +58,7 @@ router.post('/login', celebrate({
       if (response.password === body.password) {
         return res.json({
           ok: true,
-        response})
+          response})
       }
       return res.json({
         ok: false,
@@ -77,7 +77,7 @@ router.post('/login', celebrate({
       if (response.password === body.password) {
         return res.json({
           ok: true,
-        response})
+          response})
       }
       return res.json({
         ok: false,
@@ -109,8 +109,9 @@ router.post('/searchID', celebrate({
     }
     return res.json({
       ok: true,
-    response})
-  })})
+      response})
+  })
+})
 
   // Rota que busca usuario por parte do username
 router.post('/searchUsername', celebrate({
@@ -134,7 +135,8 @@ router.post('/searchUsername', celebrate({
     }
     return res.json({
       ok: true,
-    response})
-  })})
+      response})
+  })
+})
 
 module.exports = router
