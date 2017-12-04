@@ -7,7 +7,8 @@ const UserSchemaJoi = Joi.object().keys({
   facebook_id: Joi.string().required(),
   username: Joi.string().required(),
   real_name: Joi.string().required(),
-  profile_pic_url: Joi.string().required()
+  profile_pic_url: Joi.string().required(),
+  steam_id: Joi.string()
 })
 
 const UserSchema = Joigoose.convert(UserSchemaJoi)
@@ -61,3 +62,18 @@ exports.insert = (fields, next) => {
   .then(res => next(null, res))
   .catch(err => next(err))
 }
+
+
+/**
+ * Insere um steamID para um Usuário no banco de dados
+ * @param {[Object]} fields _id e steamid
+ * @param {Function} next
+ */
+exports.insertSteamID = (user_id, steam_id, next) => {
+  
+  User.update({_id: user_id}, {$set: { steam_id: steam_id }})
+  .exec()
+  .then(res => next(null, res))
+  .catch(err => next(err))
+}
+
