@@ -33,8 +33,9 @@ export const initialState = {
       AppNavigator.router.getActionForPathAndParams('Login')
   ),
   user : null,
+  ownProfile : {},
+  externalProfile : {},
   userSearchResults : [],
-  currentProfile : 'self'
 }
 
 const combinedReducers = persistCombineReducers(config,Reducers)
@@ -72,7 +73,7 @@ class AppWithNavigation extends React.Component {
           onBeforeLift={() => {
             if (this.props.user) {
               console.log('[Router] there is a user! switching to profile with params')
-              this.props.dispatch(navigate('Profile',this.props.user))
+              this.props.dispatch(navigate('Profile',{...this.props.user , isSelf : true }))
             } else {
               console.log('[Router] There is no saved user id')
             }

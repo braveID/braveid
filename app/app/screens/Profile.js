@@ -15,6 +15,7 @@ import SearchResults from '../components/SearchResults';
 // header : <Text style={{ backgroundColor : 'blue', height: Constants.statusBarHeight + 50 }}> Let there be light </Text>,
  
 const magenta = '#c93871'
+
 class Profile extends Component {
     constructor(props){
         super(props)
@@ -26,9 +27,9 @@ class Profile extends Component {
 
     static navigationOptions = (props) => {
         const { params = {} } = props.navigation.state
-        console.log('EAEW',props)
         return {
             title : 'profile',
+            gesturesEnabled : params.isSelf ? false : true,
             header : 
             <View style={{
                 justifyContent:'flex-start',
@@ -36,7 +37,7 @@ class Profile extends Component {
                 marginTop:Constants.statusBarHeight - 10,
                 alignItems:'center'
             }}>
-                {params.isSelf ? null : <Button onPress={props.navigation.goBack}color={magenta} style={{flex:1}} title='‹ Go Back'></Button>}                        
+                {params.isSelf ? null : <Button onPress={props.navigation.goBack} color={magenta} style={{flex:1}} title='‹ Go Back'></Button>}                        
                 <SearchBar
                     ref={(search) => {params.getSearchBar ? params.getSearchBar(search) : ()=>{}}}            
                     containerStyle={{
@@ -48,15 +49,14 @@ class Profile extends Component {
                         textAlign:'center',
                         color: magenta
                     }}
-                    placeholder={params.name}
+                    placeholder={params.username}
                     clearIcon={{ color: '#86939e', name: 'clear' }}
                     onChangeText={(text) => {
                         params.onInputChange(text)
                     }}
                 />
                 
-            </View>
-,
+            </View>,
             headerStyle: {
                 backgroundColor: 'black',
             },
@@ -73,19 +73,20 @@ class Profile extends Component {
     
 
     componentWillMount(){
-        let profileId = this.props.navigation.state.params
+        let profileId = this.props.navigation.state.params._id
+        this.props.fetchProfile(profileId)
+        this.isSelf = this.props.user.username == this.props.navigation.state.params.username
     }
     
     componentDidMount(){
         this.props.navigation.setParams({ 
             onInputChange : this.onSearchBarChange.bind(this),
             getSearchBar : this.getSearchBar.bind(this),
-            isSelf : this.props.user.name == this.props.navigation.state.params.name
+            isSelf : this.isSelf
         })          
     }
     
     getSearchBar(bar){
-        console.log('got the bar',bar)
         this.searchBar = bar
     }
 
@@ -122,7 +123,6 @@ class Profile extends Component {
             }
         });
                 
-        const isSelf = this.props.user.name == this.props.navigation.state.params.name
     
         return (
             <View style={{flex:1}}>
@@ -140,7 +140,7 @@ class Profile extends Component {
                 >
 
                 <View style={{flex:1}}>
-                    <Text style={{color: 'white', alignSelf:'center'}}>{isSelf ? 'This is your Profile' : 'Not yours'}</Text>
+                    <Text style={{color: 'white', alignSelf:'center'}}>{this.isSelf ? 'This is your Profile' : 'Not yours'}</Text>
                 </View>
 
                     <View style={{height: 230, width: '100%'}}>
@@ -149,16 +149,17 @@ class Profile extends Component {
                             style={{ width: '100%', height: 150}}                            
                         />
                         <Image 
-                            source={{uri: this.props.navigation.state.params.photo || 'http://2.bp.blogspot.com/-xJ4YrwmanWs/Vay6FcjgvfI/AAAAAAAATJU/_fidk6LhbxU/s1600/tumblr_nqox4gcyyg1r1636lo1_500.png'}} 
+                            source={{uri: this.props.navigation.state.params.profile_pic_url || 'http://2.bp.blogspot.com/-xJ4YrwmanWs/Vay6FcjgvfI/AAAAAAAATJU/_fidk6LhbxU/s1600/tumblr_nqox4gcyyg1r1636lo1_500.png'}} 
                             style={{ width: 120, height: 120,alignSelf: 'center', borderRadius: 60, zIndex: 10, top : -50, borderColor:'#c93871', borderWidth: 3,}}
                         />
                     </View>
 
                     <View style={{alignItems: 'center', width: '100%'}}>
-                        <Text style={{color : 'white', fontSize: 30}}> {this.props.navigation.state.params.name} </Text>
+                        <Text style={{color : 'white', fontSize: 30}}> {this.props.navigation.state.params.username} </Text>
+                        <Text style={{ color: 'lightgray', fontSize: 16 }}> {this.props.navigation.state.params.real_name} </Text>                        
                     </View>
 
-                    <View style={{ width: '100%'}}>
+                    <View style={{ width: '100%',marginTop : 20}}>
                         <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Steam </Text>
                         <View style={{backgroundColor:'#36393e',height:150}}>
                             <Button title='LOGIN TO STEAM'></Button>
@@ -184,13 +185,11 @@ class Profile extends Component {
                 </ScrollView>
 
             </View>
-        )
-
-            
+        ) 
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators,dispatch)
   }
-export default connect(mapStateToProps = (state,props) => { return {user : state.user} }, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps = (state,props) => { return { user : state.user }}, mapDispatchToProps)(Profile);

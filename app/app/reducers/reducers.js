@@ -60,15 +60,23 @@ export function user (state = initialState, action) {
   }
 }
 
-export function currentProfile (state = initialState, action) {
+export function externalProfile (state = initialState, action) {
   switch (action.type) {
-    case 'SWITCH_PROFILE':
-      return action.newProfile
-
+    case 'FETCHED_PROFILE':
+      return action.profile
     default:
       return state
   }
-};
+}
+
+export function ownProfile (state = initialState, action) {
+  switch (action.type) {
+    case 'NSEI':
+      return state
+    default:
+      return state
+  }
+}
 
 export const userSearchResults = (state = initialState, action) => {
   switch (action.type) {
