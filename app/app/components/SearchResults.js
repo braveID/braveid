@@ -54,18 +54,23 @@ class SearchResults extends Component {
         return (
             <Animated.View style={[{ opacity: viewOpacity }].concat(styles.container || [])}>
                 <FlatList
-                    style={{zIndex: 2, maxHeight: 'auto'}}
+                    style={{zIndex: 1, maxHeight: 'auto'}}
                     data={this.props.users}
-                renderItem={({item}) => 
-                    <TouchableHighlight
-                        style={{width:100+'%',zIndex:2}}
-                        onPress={() => {
-                            console.log('pressed on result')
-                            this.setState({ resultPressed : true })
-                        }}
-                    >
-                        <Text style={styles.item}>{item.email}</Text> 
-                    </TouchableHighlight>
+                    keyboardDismissMode='on-drag'
+                    keyboardShouldPersistTaps='always'
+                    renderItem={({item}) => 
+                        <TouchableHighlight
+                            key={item.cell}
+                            style={{width:100+'%',zIndex:2}}
+                            onPress={() => {
+                                console.log('pressed on result')
+                                this.setState({ resultPressed : true })
+                                this.props.clear()
+                                this.props.navigate('Profile',{ name : item.name.first, photo : item.picture.medium })
+                            }}
+                        >
+                            <Text style={styles.item}>{item.email}</Text> 
+                        </TouchableHighlight>
                     }
                 />
 
@@ -77,7 +82,7 @@ class SearchResults extends Component {
                         right: 0,
                         top: 0,
                         height: 100+'%',
-                        zIndex:1
+                        zIndex:0
                     }}
                 >
                 <View
@@ -99,7 +104,7 @@ class SearchResults extends Component {
                             }
                         },150)
                     }} 
-                    style={{height:'100%',zIndex:1}}></View>
+                    style={{height:'100%',zIndex:0}}></View>
                 </LinearGradient>         
             </Animated.View>
 

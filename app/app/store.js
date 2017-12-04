@@ -29,12 +29,12 @@ const config = {
 }
 
 export const initialState = {
-  count : 0,
   navigation : AppNavigator.router.getStateForAction(
       AppNavigator.router.getActionForPathAndParams('Login')
   ),
   user : null,
-  userSearchResults : []
+  userSearchResults : [],
+  currentProfile : 'self'
 }
 
 const combinedReducers = persistCombineReducers(config,Reducers)

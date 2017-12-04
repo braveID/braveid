@@ -2,16 +2,6 @@ import * as types from '../actions/types'
 import { NavigationActions, StackNavigator } from 'react-navigation'
 import { AppNavigator, initialState } from '../store';
 
-export function count(state = initialState, action) {
-    // console.log('REDUCER',state)
-    switch(action.type){
-        case types.INCREMENT_COUNT:
-            return state += 1
-        default:
-            return state
-    }
-}
-
 export function navigation(state = initialState, action){
     // console.log('action',action)    
     switch(action.type){
@@ -70,6 +60,17 @@ export function user(state = initialState, action){
     }
 }
 
+export function currentProfile(state = initialState, action){
+    switch (action.type) {
+        case 'SWITCH_PROFILE':
+            return action.newProfile
+            
+        default:
+            return state;
+    }
+};
+
+
 export const userSearchResults = (state = initialState, action) => {
     switch (action.type) {
         case 'OBTAINED_USERS': 
@@ -77,5 +78,5 @@ export const userSearchResults = (state = initialState, action) => {
         default:
             return state;
     }
-};
+}
 
