@@ -4,6 +4,8 @@ const { Joi } = require('celebrate')
 const router = express.Router()
 const { celebrate } = require('celebrate')
 const User = require('../models/user')
+const { steam } = require('../../helpers/steam.js')
+const { steam } = require('../../helpers/leagueoflegends.js')
 
 /**
  * Cria a conta de um usuário. Adicionar parâmetros extras caso necessário
@@ -103,12 +105,24 @@ router.get('/profile', celebrate({
         error: 'Usuário não encontrado'
       })
     }
+
     const steamId = user.steam_id
+    const lolId = user.lol_id
 
-    if (!steamId) return res.json(user)
+    if (!steamId) {
+      return res.json(user)
+    } else {
+      user.steam_profile = steam.getSteamInfo(steamId)
+      return res.json(user)
+    }
 
-    // TODO: buscar perfis
-  })
+    if (!lolId) {
+      return res.json(user)
+    } else {
+      user.lol_profile = lol.getLolInfo(lolId)
+      return res.json(user)
+    }
+
 })
 
 module.exports = router
