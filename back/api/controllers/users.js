@@ -126,10 +126,10 @@ router.post('/searchUsername', celebrate({
         error: 'Usuário não encontrado'
       })
     }
-    if (response === null) {
+    if (response === null || response.length === 0) {
       return res.json({
         ok: false,
-        error: 'Usuário não encontrado1'
+        error: 'Usuário não encontrado'
       })
     }
     return res.json({
