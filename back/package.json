@@ -6,6 +6,7 @@
   "author": "Marcelo Prado",
   "license": "ISC",
   "scripts": {
+    "start": "pm2-dev start server.js",
     "production": "export NODE_ENV=production && pm2 start server.js -i max"
   },
   "dependencies": {
