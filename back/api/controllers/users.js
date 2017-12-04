@@ -89,4 +89,26 @@ router.post('/login', celebrate({
   }
 })
 
+router.get('/profile', celebrate({
+  query: Joi.object().keys({
+    user_id: Joi.string().required()
+  })
+}), (req, res) => {
+  const { user_id } = req.query
+
+  User.findById(user_id, (err, user) => {
+    if (err || !user) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    const steamId = user.steam_id
+
+    if (!steamId) return res.json(user)
+
+    // TODO: buscar perfis
+  })
+})
+
 module.exports = router
