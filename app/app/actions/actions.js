@@ -62,7 +62,7 @@ export const login = (userData) => async dispatch => {
   })
 }
 
-export async function signUp(fbData){
+export const signUp = (fbData) => async dispatch => {
   dispatch({ type: 'SIGNING_UP' })  
   try {
     let res = await braveFetch('/users/signup', {
@@ -74,12 +74,10 @@ export async function signUp(fbData){
     
     res = await res.json()
     console.log('SIGNUP RESULT',res)
-    login(res)
-    
+    dispatch(login(res)) 
   } catch (error) {
     console.log(error)
   }
-  res = await res.json()
 }
 
 export const onFacebookLogin = (fbData) => async dispatch => {

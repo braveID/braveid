@@ -62,9 +62,7 @@ class SearchResults extends Component {
             <SearchResultCell
               navigate={this.props.navigate}
               clear={this.props.clear}
-              id={item._id}
-              username={item.username}
-              realName={item.real_name}
+              user={item}
               onResultPressed={() => this.setState({ resultPressed: true })}
             />
           }
