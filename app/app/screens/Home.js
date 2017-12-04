@@ -35,7 +35,7 @@ class Home extends Component {
     }
 
     _handlePressButtonAsync = async () => {
-        let result = await WebBrowser.openBrowserAsync('https://expo.io');
+        let result = await WebBrowser.openBrowserAsync('http://localhost:3000/steamAuth/steam');
         this.setState({ result });
     }   
 
@@ -55,7 +55,7 @@ class Home extends Component {
                 <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID </Text>
                 <Button title='increment' onPress={() => {this.incrementCount()}}> Inc </Button>
                 <Button title='log store' onPress={() => {console.log(store.getState())}}> Log store </Button>
-                <Button title='navigate' onPress={() => {this.props.changeScreen('Profile')}}> Navigate </Button>
+                <Button title='navigate' onPress={() => {this.props.navigate('Profile')}}> Navigate </Button>
                 <Button title='Facebook' onPress={() => {logIn()}}> Navigate </Button>
                 <Button
                     style={styles.paragraph}
