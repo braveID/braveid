@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableHighlight, Text, View, WebView, FlatList, ListRenderItem, Button, Animated } from 'react-native'
+import { StyleSheet, View, FlatList, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ActionCreators } from '../actions'
@@ -58,22 +58,16 @@ class SearchResults extends Component {
           data={this.props.users}
           keyboardDismissMode='on-drag'
           keyboardShouldPersistTaps='always'
-          renderItem={({item}) => {
-            return (
-              <TouchableHighlight
-                key={item._id}
-                style={{ width: 100 + '%', zIndex: 2 }}
-                onPress={() => {
-                  this.setState({ resultPressed: true })
-                  this.props.clear()
-                  this.props.navigate('Profile', { item })
-                }}>
-                <SearchResultCell username={item.username} realName={item.real_name} />
-              </TouchableHighlight>
-            )
+          renderItem={({item}) =>
+            <SearchResultCell
+              navigate={this.props.navigate}
+              clear={this.props.clear}
+              id={item._id}
+              username={item.username}
+              realName={item.real_name}
+              onResultPressed={() => this.setState({ resultPressed: true })}
+            />
           }
-
-            }
         />
 
         <LinearGradient
