@@ -8,7 +8,8 @@ const UserSchemaJoi = Joi.object().keys({
   username: Joi.string().required(),
   real_name: Joi.string().required(),
   profile_pic_url: Joi.string().required(),
-  steam_id: Joi.string()
+  steam_id: Joi.string(),
+  riot_id: Joi.string()
 })
 
 const UserSchema = Joigoose.convert(UserSchemaJoi)
@@ -77,3 +78,15 @@ exports.insertSteamID = (user_id, steam_id, next) => {
   .catch(err => next(err))
 }
 
+/**
+ * Insere um riotID para um Usuário no banco de dados
+ * @param {[Object]} fields _id e riotID
+ * @param {Function} next
+ */
+exports.insertRiotID = (user_id, riot_id, next) => {
+  
+  User.update({_id: user_id}, {$set: { riot_id: riot_id }})
+  .exec()
+  .then(res => next(null, res))
+  .catch(err => next(err))
+}

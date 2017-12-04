@@ -161,6 +161,27 @@ router.post('/updateSteamID', celebrate({
   })
 })
 
+// Rota que adiciona um steamID a um usuário
+router.post('/updateRiotID', celebrate({
+  body: Joi.object().keys({
+    _id: Joi.string().required(),
+    riot_id: Joi.string().required()
+  })
+}), (req, res) => {
+  const body = req.body
+  User.insertRiotID(body._id, body.riot_id, (err, response) => {
+    console.log(err, response)
+    if (err) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    return res.json({
+      ok: true,
+      response})
+  })
+})
 
 
 module.exports = router
