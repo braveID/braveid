@@ -112,4 +112,29 @@ router.post('/searchID', celebrate({
     response})
   })})
 
+  // Rota que busca usuario por parte do username
+router.post('/searchUsername', celebrate({
+  body: Joi.object().keys({
+    username: Joi.string().required()
+  })
+}), (req, res) => {
+  const body = req.body
+  User.findByUsername(body.username, (err, response) => {
+    if (err) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    if (response === null) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado1'
+      })
+    }
+    return res.json({
+      ok: true,
+    response})
+  })})
+
 module.exports = router

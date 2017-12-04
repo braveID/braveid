@@ -30,11 +30,12 @@ exports.findByEmail = (email, next) => {
 }
 
 exports.findByUsername = (username, next) => {
-  User.findOne({ username }).exec()
-    .then((user) => {
-      return next(null, user)
-    })
-    .catch(err => next(err))
+  User.find({ "username": { "$regex": username, "$options": "i" } },
+  function(err,docs) {
+    console.log(docs)
+    return next(null, docs)
+   })
+   
 }
 
 exports.findByFacebookID = (facebook_id, next) => {
