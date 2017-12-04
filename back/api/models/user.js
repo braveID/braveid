@@ -4,9 +4,10 @@ const Joigoose = require('joigoose')(mongoose)
 
 const UserSchemaJoi = Joi.object().keys({
   _id: Joi.string().required(),
+  facebook_id: Joi.string().required(),
   username: Joi.string().required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().required()
+  real_name: Joi.string().required(),
+  profile_pic_url: Joi.string().required()
 })
 
 const UserSchema = Joigoose.convert(UserSchemaJoi)

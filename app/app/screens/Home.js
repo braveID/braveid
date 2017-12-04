@@ -55,7 +55,7 @@ class Home extends Component {
                 <Text style={{color : 'white', fontSize: 25}}> Welcome to BraveID </Text>
                 <Button title='increment' onPress={() => {this.incrementCount()}}> Inc </Button>
                 <Button title='log store' onPress={() => {console.log(store.getState())}}> Log store </Button>
-                <Button title='navigate' onPress={() => {this.props.changeScreen('Profile')}}> Navigate </Button>
+                <Button title='navigate' onPress={() => {this.props.navigate('Profile')}}> Navigate </Button>
                 <Button title='Facebook' onPress={() => {logIn()}}> Navigate </Button>
                 <Button
                     style={styles.paragraph}
@@ -75,13 +75,28 @@ function mapDispatchToProps(dispatch) {
 async function logIn() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('367921270333733', {
         permissions: ['public_profile'],
+        behavior: 'web'
       });
     if (type === 'success') {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`);
-      console.log(`Hi ${(await response.json()).name}!`);
+        // Get the user's name using Facebook's Graph API
+        const res = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        const response = await res.json();
+    
+        console.log(response)
+        console.log(`Hi ${(response.name)}!`);
+        getProfilePicUrl(token, response.id)
     }
-  }
+}
+
+/**
+ * Retorna a URL da foto de perfil do Face
+ * @param {String} token adquirido com Expo.Facebook.logInWithReadPermissionsAsync
+ * @param {String} userId ID do usuário no face
+ */
+async function getProfilePicUrl(token, userId) {
+    const res = await fetch(`https://graph.facebook.com/${userId}/picture?access_token=${token}`);
+    const response = await res;
+    console.log(response)
+}
 
 export default connect(() => { return {} }, mapDispatchToProps)(Home);
