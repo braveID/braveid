@@ -12,27 +12,51 @@ module.exports = {
                 return response.json()
             });
     
-        var getRecentlyPlayedGames = fetch('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key='+key+'&steamid='+steamids)
+        var getPlayerSummaries = fetch('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='+key+'&steamids='+steamids)
             .then(function(response) {
                 return response.json()
             });
-    
+
+        var getPlayerSteamLevel = fetch('http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key='+key+'&steamid='+steamids)
+            .then(function(response) {
+                return response.json()
+            });
+
+        var getPlayerGames = fetch('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key='+key+'&steamid='+steamids+'&include_played_free_games=1')
+            .then(function(response) {
+                return response.json()
+            });
+
+        var getRecentlyPlayedGames = fetch('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key='+key+'&steamid='+steamids+'&count=2')
+            .then(function(response) {
+                return response.json()
+            });
+
         var getPlayerBans = fetch('http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key='+key+'&steamids='+steamids)
             .then(function(response) {
                 return response.json()
             });
-    
-        var combinedData = {"getPlayerSummaries":{}, "getRecentlyPlayedGames":{}, "getPlayerBans":{}};
-        Promise.all([getPlayerSummaries, getRecentlyPlayedGames, getPlayerBans])
+
+        var combinedData = {"getPlayerSummaries":{}, "getRecentlyPlayedGames":{}, "getPlayerBans":{}, "getPlayerGames":{}, "getPlayerSteamLevel":{}};
+        Promise.all([getPlayerSummaries, getRecentlyPlayedGames, getPlayerBans, getPlayerGames, getPlayerSteamLevel])
             .then(function(values) {
                 combinedData["getPlayerSummaries"] = values[0];
                 combinedData["getRecentlyPlayedGames"] = values[1];
                 combinedData["getPlayerBans"] = values[2];
+                combinedData["getPlayerGames"] = values[3];
+                combinedData["getPlayerSteamLevel"] = values[4];
+
                 serviceProfile.steamInfo = combinedData.getPlayerSummaries.response.players[0]
+                serviceProfile.steamInfo.timecreated = combinedData.getPlayerSummaries.response.players[0].timecreated
+                serviceProfile.steamInfo.accountLevel = combinedData.getPlayerSteamLevel.response.player_level
+                serviceProfile.steamInfo.accountAge = Math.floor(Math.abs(Math.round(new Date().getTime()/1000.0) - serviceProfile.steamInfo.timecreated) / 86400 / 365)
+                serviceProfile.steamInfo.numberOfGamesOwned = combinedData.getPlayerGames.response.game_count
+                serviceProfile.steamInfo.numberOfHoursPlayed = combinedData.getPlayerGames.response.games.reduce((a,b)=>{return a + b.playtime_forever},0)/60|0
                 serviceProfile.last2weeksgames = combinedData.getRecentlyPlayedGames.response.games
                 serviceProfile.steamBans = combinedData.getPlayerBans.players[0]
                 console.log('Fetched Steam information')
                 callback(serviceProfile)
+            
             });
     },
 
