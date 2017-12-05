@@ -115,28 +115,34 @@ router.post('/login', celebrate({
       const summonerName = userInfo.user.summonerName
       const lolId = userInfo.user.summonerId
       const accountId = userInfo.user.accountId
-      
-      if (!steamId) {
-        return res.json(completedUser)
-      } else {
-        var steamData = steam.getSteamInfo(steamId, (serviceProfile)=>{
-          completedUser.steamProfile = serviceProfile
-          // return res.json(completedUser)
-        })
+
+      function requestServiceProfiles(callback) {
+        if (steamId) {
+          var steamData = steam.getSteamInfo(steamId, (serviceProfile)=>{
+            userInfo.steamProfile = serviceProfile
+            callback(userInfo)
+          })
+        } else {
+          userInfo.steamProfile = {}
+          callback(userInfo)
+        }
+  
+        if (lolId) {
+          var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile)=>{
+            userInfo.lolProfile = serviceProfile
+            callback(userInfo)
+          })
+        } else {
+          userInfo.lolProfile = {}
+          callback(userInfo)
+        }
       }
 
-      if (!lolId) {
-        return res.json(completedUser)
-      } else {
-        var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile)=>{
-          completedUser.lolProfile = serviceProfile
-          return res.json(completedUser)
-        })
-      }
-
-      // fetch('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=8DD3D47C1DFB6EA97EA7F6665C4FBA20&steamids=76561197960435530')
-      // .then((response) => response.json())
-      // .then((jsonResponse) => res.json(jsonResponse))
+      var sendData = requestServiceProfiles((userInfo)=>{
+        if (userInfo.steamProfile && userInfo.lolProfile) {
+          return res.json(userInfo)
+        }
+      })
   })
 });
 
