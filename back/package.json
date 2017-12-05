@@ -1,7 +1,7 @@
 {
-  "name": "lapag-rest",
+  "name": "braveid-rest",
   "version": "1.0.0",
-  "description": "REST API da LaPag",
+  "description": "REST API do BraveID",
   "main": "index.js",
   "author": "Marcelo Prado",
   "license": "ISC",
@@ -24,6 +24,8 @@
     "js2xmlparser": "^3.0.0",
     "later": "^1.2.0",
     "mongoose": "^4.10.5",
+    "node-fetch": "^1.7.3",
+    "passport-steam": "^1.0.8",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "simpl-schema": "^0.3.0",
