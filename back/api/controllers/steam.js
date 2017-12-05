@@ -20,10 +20,6 @@ passport.use(new SteamStrategy({
 }, function (identifier, profile, done) {
     // asynchronous verification, for effect...
   process.nextTick(function () {
-        // To keep the example simple, the user's Steam profile is returned to
-        // represent the logged-in user.  In a typical application, you would want
-        // to associate the Steam account with a user record in your database,
-        // and return that user instead.
     profile.identifier = identifier
     return done(null, profile)
   })
@@ -35,9 +31,6 @@ router.use(passport.initialize())
 router.get('/steam',
     passport.authenticate('steam', { failureRedirect: '/' }),
     function (req, res) {
-      console.log('DOES THIS RUN?')
-      let requesterId = req.params.id
-      console.log(`User ${requesterId} requested to sync Steam account`)
       res.redirect('/')
     })
 

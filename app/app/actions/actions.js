@@ -76,6 +76,7 @@ export const login = (userData) => async dispatch => {
   })
 }
 
+
 export const signUp = (fbData) => async dispatch => {
   dispatch({ type: 'SIGNING_UP' })  
   try {
@@ -144,5 +145,3 @@ export const searchUsers = (username) => async dispatch => {
   }
   dispatch(showResults(users))
 }
-
- 

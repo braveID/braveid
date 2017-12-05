@@ -3,7 +3,10 @@ const express = require('express')
 const { Joi } = require('celebrate')
 const router = express.Router()
 const { celebrate } = require('celebrate')
+const fetch = require('node-fetch')
 const User = require('../models/user')
+const steam = require('../../helpers/steam.js')
+const lol = require('../../helpers/leagueoflegends.js')
 
 /**
  * Cria a conta de um usuário. Adicionar parâmetros extras caso necessário
@@ -86,6 +89,60 @@ router.post('/login', celebrate({
     })
   }
 })
+
+  router.get('/profile', celebrate({
+    query: Joi.object().keys({
+      user_id: Joi.string().required()
+    })
+  }), (req, res) => {
+    const { user_id } = req.query
+
+    User.findById(user_id, (err, user) => {
+      if (err || !user) {
+        return res.json({
+          ok: false,
+          error: 'Usuário não encontrado'
+        })
+      }
+
+      var completedUser = {user}; //Perfil completo do usuário a ser retornado
+      let userInfo = JSON.stringify(completedUser);
+      userInfo = JSON.parse(userInfo) //Stringify e Parse porque javascript é zuado
+
+      const steamId = userInfo.user.steam_id
+      const summonerName = userInfo.user.summonerName
+      const lolId = userInfo.user.summonerId
+      const accountId = userInfo.user.accountId
+
+      function requestServiceProfiles(callback) {
+        if (steamId) {
+          var steamData = steam.getSteamInfo(steamId, (serviceProfile)=>{
+            userInfo.steamProfile = serviceProfile
+            callback(userInfo)
+          })
+        } else {
+          userInfo.steamProfile = {}
+          callback(userInfo)
+        }
+  
+        if (lolId) {
+          var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile)=>{
+            userInfo.lolProfile = serviceProfile
+            callback(userInfo)
+          })
+        } else {
+          userInfo.lolProfile = {}
+          callback(userInfo)
+        }
+      }
+
+      var sendData = requestServiceProfiles((userInfo)=>{
+        if (userInfo.steamProfile && userInfo.lolProfile) {
+          return res.json(userInfo)
+        }
+      })
+  })
+});
 
 // Rota que busca usuario pelo facebook ID
 router.post('/searchID', celebrate({
@@ -199,4 +256,4 @@ router.get('/:userId', (req, res) => {
   
 
 
-module.exports = router
+module.exports = router;
