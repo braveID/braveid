@@ -76,7 +76,7 @@ class Profile extends Component {
     
     componentWillMount(){
         console.log('ISSO AQUI CATIORRO',this.props.navigation.state.params)
-        
+        console.log('LINKING URL',Constants.linkingUri)
         let profileId = this.props.navigation.state.params._id
         this.props.fetchProfile(profileId,this.props.isSelf)
         this.props.navigation.setParams({
@@ -97,7 +97,7 @@ class Profile extends Component {
     searchUsers(){
         if (this.state.searchFieldText != ''){
             console.log('searching for',this.state.searchFieldText)
-            this.props.searchUsers(this.state.searchFieldText)            
+            this.props.searchUsers(this.state.searchFieldText)
         }
     }
 
@@ -200,6 +200,7 @@ class Profile extends Component {
                             steam={user.steam_id === undefined} 
                             battlenet={user.battlenet_id === undefined} 
                             riot={user.riot_id === undefined}
+                            user={user}
                         /> : null
                     }
 
@@ -221,7 +222,6 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps = (state,props) => {
     let isOwner = false
     if (props.navigation.state.params._id == state.user._id){
-        console.log('THIS IS YOUR OWN PROFILE!')
         isOwner = true
     }
     return {

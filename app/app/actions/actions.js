@@ -19,6 +19,7 @@ export const fetchProfile = (id,isSelf) => async dispatch => {
         'Content-Type': 'application/json'
       },
     })
+    
     console.log(res)
     res = await res.json()
     console.log(res)
