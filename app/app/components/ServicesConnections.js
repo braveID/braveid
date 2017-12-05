@@ -18,7 +18,7 @@ const SearchResultCell = ({ steam, battlenet, riot }) => {
 
   return (
     <View style={styles.container}>
-      { steam ? <ConnectButton title='Conectar com Steam' icon={steamIcon} /> : null}
+      { steam ? <ConnectButton title='Conectar com Steam' icon={steamIcon} onPress={() => console.log('called')} /> : null}
       { battlenet ? <ConnectButton title='Conectar com BattleNet' icon={battlenetIcon} /> : null}
       { riot ? <ConnectButton title='Conectar com Riot' icon={riotIcon} /> : null}
     </View>

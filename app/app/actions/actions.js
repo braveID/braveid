@@ -23,17 +23,21 @@ export const fetchProfile = (id,isSelf) => async dispatch => {
     res = await res.json()
     console.log(res)
 
-    if (isSelf) {
-      dispatch({
-        type: 'FETCHED_OWN_PROFILE',
-        profile: res.response
-      })
-    } else {
-      dispatch({
-        type: 'FETCHED_PROFILE',
-        profile: res.response
-      })
+    if (res.ok) {
+      if (isSelf) {
+        dispatch({
+          type: 'FETCHED_OWN_PROFILE',
+          profile: res.response
+        })
+      } else {
+        dispatch({
+          type: 'FETCHED_PROFILE',
+          profile: res.response
+        })
+      }
     }
+    console.log('OPA, USUÁRIO NÃO FOI ENCONTRADO', id, isSelf);
+    
   } catch (error) {
     console.log(error)
   }
@@ -96,7 +100,6 @@ export const onFacebookLogin = (fbData) => async dispatch => {
       facebook_id: fbData.id
     })
     res = await res.json()
-    console.log(res)
 
     if (!res.ok) {
       // Usuário ainda não está registrado, precisa criar usuário

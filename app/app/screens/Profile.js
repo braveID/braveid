@@ -11,6 +11,8 @@ import { debounce } from 'lodash'
 import { AuthSession } from 'expo';
 
 import SearchResults from '../components/SearchResults';
+import ServicesConnections from '../components/ServicesConnections';
+import LogoutButton from '../components/LogoutButton';
 import { externalProfile } from '../reducers/reducers';
 
 // header : <Text style={{ backgroundColor : 'blue', height: Constants.statusBarHeight + 50 }}> Let there be light </Text>,
@@ -74,6 +76,7 @@ class Profile extends Component {
     
     componentWillMount(){
         console.log('ISSO AQUI CATIORRO',this.props.navigation.state.params)
+        
         let profileId = this.props.navigation.state.params._id
         this.props.fetchProfile(profileId,this.props.isSelf)
         this.props.navigation.setParams({
@@ -157,36 +160,54 @@ class Profile extends Component {
                         />
                     </View>
 
-                    <View style={{alignItems: 'center', width: '100%'}}>
+                    <View style={{alignItems: 'center', width: '100%', marginBottom: 20}}>
                         <Text style={{color : 'white', fontSize: 30}}> {this.props.navigation.state.params.username} </Text>
                         <Text style={{ color: 'lightgray', fontSize: 16 }}> {this.props.navigation.state.params.real_name} </Text>                        
                     </View>
 
-                    <View style={{ width: '100%',marginTop : 20}}>
-                        <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Steam </Text>
-                        <View style={{backgroundColor:'#36393e',height:150}}>
-                            <Button onPress={()=>{}} title='LOGIN TO STEAM'></Button>
-                            <Text> {this.state.searchFieldText} </Text>                
+                    { user.steam ? 
+                        <View style={{ width: '100%',marginTop : 20}}>
+                            <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Steam </Text>
+                            <View style={{backgroundColor:'#36393e',height:150}}>
+                                <Text> {this.state.searchFieldText} </Text>                
+                            </View>
                         </View>
-                    </View>
+                        : null
+                    }
 
-                    <View style={{ width: '100%'}}>
-                        <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Battle.NET </Text>
-                        <View style={{backgroundColor:'#36393e',height:150}}>
-                            <Text> {this.state.searchFieldText} </Text>                
+                    { user.battlenet ? 
+                        <View style={{ width: '100%'}}>
+                            <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Battle.NET </Text>
+                            <View style={{backgroundColor:'#36393e',height:150}}>
+                                <Text> {this.state.searchFieldText} </Text>                
+                            </View>
                         </View>
-                    </View>
+                        : null
+                    }
 
-                    <View style={{ width: '100%'}}>
-                        <Text style={{color : magenta, fontSize: 35, fontWeight: 'bold', left:10}}> League Of Legends </Text>
-                        <View style={{backgroundColor:'#36393e',height:150}}>
-                            <Text> {this.state.searchFieldText} </Text>                
-                        </View>
-                    </View>
 
-                    <ServicesConnections steam={user.steam_id === undefined} battlenet={user.battlenet_id === undefined} riot={user.riot_id === undefined}/>
+                    { user.lol ? 
+                        <View style={{ width: '100%' }}>
+                            <Text style={{ color: magenta, fontSize: 35, fontWeight: 'bold', left: 10 }}> League Of Legends </Text>
+                            <View style={{ backgroundColor: '#36393e', height: 150 }}>
+                                <Text> {this.state.searchFieldText} </Text>
+                            </View>
+                        </View> : null
+                    }
+                    
+                    { this.props.isSelf ? 
+                        <ServicesConnections 
+                            steam={user.steam_id === undefined} 
+                            battlenet={user.battlenet_id === undefined} 
+                            riot={user.riot_id === undefined}
+                        /> : null
 
-                    <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
+                    }
+
+                    
+                    { this.props.isSelf ? 
+                        <LogoutButton onPress={() => this.props.logout()}/> : null 
+                    }
 
                 </ScrollView>
 
