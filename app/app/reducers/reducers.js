@@ -62,6 +62,8 @@ export function user (state = initialState, action) {
 
 export function externalProfile (state = initialState, action) {
   switch (action.type) {
+    case 'REQUESTED_PROFILE':
+      return {}
     case 'FETCHED_PROFILE':
       return action.profile
     default:
@@ -71,8 +73,8 @@ export function externalProfile (state = initialState, action) {
 
 export function ownProfile (state = initialState, action) {
   switch (action.type) {
-    case 'NSEI':
-      return state
+    case 'FETCHED_OWN_PROFILE':
+      return action.profile
     default:
       return state
   }

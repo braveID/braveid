@@ -9,24 +9,33 @@ export function increment () {
   }
 }
 
-export const fetchProfile = (id) => async dispatch => {
-  dispatch({ type: 'REQUESTED_PROFILE' })
+export const fetchProfile = (id,isSelf) => async dispatch => {
+  dispatch({ type: 'REQUESTED_PROFILE', id : id })
   console.log('Fetched profile for user id:',id)
   try {
-    let res = await fetch(`${API_PATH}/users/${id}`, {
-      method: 'get'
+    let res = await fetch(`${API_PATH}/users/${id}`,{
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
     })
+    console.log(res)
     res = await res.json()
-    dispatch(onProfileLoaded(res))
+    console.log(res)
+
+    if (isSelf) {
+      dispatch({
+        type: 'FETCHED_OWN_PROFILE',
+        profile: res.response
+      })
+    } else {
+      dispatch({
+        type: 'FETCHED_PROFILE',
+        profile: res.response
+      })
+    }
   } catch (error) {
     console.log(error)
-  }
-}
-
-export function onProfileLoaded(profile){
-  return {
-    type : 'FETCHED_PROFILE',
-    profile : profile
   }
 }
 
@@ -74,7 +83,7 @@ export const signUp = (fbData) => async dispatch => {
     
     res = await res.json()
     console.log('SIGNUP RESULT',res)
-    dispatch(login(res)) 
+    dispatch(login(res.response)) 
   } catch (error) {
     console.log(error)
   }

@@ -24,7 +24,7 @@ export const AppNavigator = StackNavigator(routes)
 
 const config = {
   key: 'root',
-  blacklist : ['navigation','userSearchResults'],
+  blacklist : ['navigation','userSearchResults','externalProfile','ownProfile'],
   storage,
 }
 
