@@ -28,18 +28,21 @@ const LolProfile = ({lol}) => {
       width: '100%'
     },
     profilePic: {
-      width: '40%',
-      height: 200,
-      borderRadius: 10,
-      paddingHorizontal: 15
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      paddingHorizontal: 0,
+      top: 10,
+      right: 30,
+      alignSelf: 'center'
     },
     accountInfo: {
       width: '60%',
       display: 'flex',
       alignItems: 'stretch',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      left: 0
     },
-
     numericContent: {
       backgroundColor: '#161616',
       paddingHorizontal: 20,
@@ -121,10 +124,11 @@ const LolProfile = ({lol}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>League of Legends</Text>
-
       <View style={styles.basicStats}>
+
         <View style={styles.accountInfo}>
-          <Text style={styles.nickname}>{lol.name}</Text>
+
+          <Text style={styles.nickname}>{lol.name || 'ewe'}</Text>
 
           <View style={styles.numericsContentContainer}>
             <View style={styles.numericContent}>
@@ -132,7 +136,6 @@ const LolProfile = ({lol}) => {
               <Text style={styles.numericContentDescription}>WINS</Text>
             </View>
             <View style={styles.divider} />
-
             <View style={styles.numericContent}>
               <Text style={styles.numericContentAccent}>{lol.ranked.losses}</Text>
               <Text style={styles.numericContentDescription}>LOSSES</Text>
@@ -140,16 +143,22 @@ const LolProfile = ({lol}) => {
           </View>
         </View>
 
+        <Image style={styles.profilePic} source={{
+          uri: `http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/${lol.profileIconId}.png`,
+          width: 100,
+          height: 100
+        }}
+        />
       </View>
 
       <Text style={styles.subheader}>Rank</Text>
-        <View style={styles.numericContent}>
-            <Text style={styles.numericContentAccent}>{lol.ranked.tier}</Text>
-        </View>
-        <View style={styles.numericContent}>
-            <Text style={styles.numericContentAccent}>{lol.ranked.rank}</Text>
-        </View>
 
+      <View style={styles.numericContent}>
+        <Text style={styles.numericContentAccent}>{lol.ranked.tier}</Text>
+      </View>
+      <View style={styles.numericContent}>
+        <Text style={styles.numericContentAccent}>{lol.ranked.rank}</Text>
+      </View>
 
     </View>
 

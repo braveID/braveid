@@ -15,6 +15,7 @@ import ServicesConnections from '../components/ServicesConnections';
 import LogoutButton from '../components/LogoutButton';
 import SteamProfile from '../components/SteamProfile';
 import { externalProfile } from '../reducers/reducers';
+import LolProfile from '../components/LolProfile';
  
 const magenta = '#c93871'
 
@@ -126,9 +127,7 @@ class Profile extends Component {
             }
         });
                 
-
         const user = this.props.user;
-        console.log(user);
         
         return (
             <View style={{flex:1}}>
@@ -145,9 +144,9 @@ class Profile extends Component {
                     style={{backgroundColor: '#2c2f33',width : '100%', height: 2000, flex: 1}}
                 >
 
-                <View style={{flex:1}}>
+                {/* <View style={{flex:1}}>
                     <Text style={{color: 'white', alignSelf:'center'}}>{this.props.isSelf ? 'This is your Profile' : 'Not yours'}</Text>
-                </View>
+                </View> */}
 
                     <View style={{height: 230, width: '100%'}}>
                         <Image 
@@ -167,6 +166,8 @@ class Profile extends Component {
 
 
                     { user.steam_id && user.steamProfile ? <SteamProfile steam={user.steamProfile}/> : null }
+
+                    { user.lolProfile != {} && user.summonerName ? <LolProfile lol={user.lolProfile}/> : null }
 
                     { user.lol_id && user.lolProfile ? 
                         <View style={{ width: '100%' }}>
@@ -202,10 +203,17 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators,dispatch)
   }
 export default connect(mapStateToProps = (state,props) => {
+    console.log('PROPS:',props)
+    console.log('STATE:',state)
+    
     let isOwner = false
-    if (props.navigation.state.params._id == state.user._id){
-        isOwner = true
+    if (state.user){
+        if (props.navigation.state.params._id == state.user._id) {
+            isOwner = true
+        }
     }
+   
+
     return {
         user : isOwner ? state.ownProfile : state.externalProfile,
         self : state.user,

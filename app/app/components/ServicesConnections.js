@@ -21,22 +21,24 @@ class ServicesConnections extends React.Component {
       authUrl:`http://localhost:3002/external/steam`,
       returnUrl:'exp://localhost:19000/+steam_callback'
     });
+
     if (result.type == 'success'){
       console.log(result.params.steamid)
 
-      let status = await braveFetch('/updateSteamId',{
-        _id : this.props.user._id,
-        steam_id: result.params.steamid
-      })
-
-      status = status.json()
-      
-      if (status.ok){
-        console.log('Steam key saved successfully')
+      try {
+        let status = await braveFetch('/users/updateSteamId', {
+          _id: this.props.user._id,
+          steam_id: result.params.steamid
+        })
+        status = status.json()
+        if (status.ok) {
+          console.log('Steam key saved successfully')
+        }
+      } catch(e) {
+        console.log(e)
       }
     }
-    this.setState({ steamResult : result });
-  };
+  }
 
 
   render () {

@@ -12,11 +12,6 @@ module.exports = {
               return response.json()
             })
 
-    var getPlayerSummaries = fetch('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + key + '&steamids=' + steamids)
-            .then(function (response) {
-              return response.json()
-            })
-
     var getPlayerSteamLevel = fetch('http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=' + key + '&steamid=' + steamids)
             .then(function (response) {
               return response.json()
@@ -55,7 +50,7 @@ module.exports = {
               serviceProfile.steamInfo.numberOfGamesOwned = combinedData.getPlayerGames.response.game_count
               serviceProfile.steamInfo.numberOfHoursPlayed = combinedData.getPlayerGames.response.games.reduce((a, b) => { return a + b.playtime_forever }, 0) / 60 | 0
 
-              if (games && games.lenght > 0) {
+              if (games && games.length > 0) {
                 serviceProfile.last2weeksgames = [{
                   game_name: combinedData.getRecentlyPlayedGames.response.games[0].name,
                   game_photo: 'http://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[0].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[0].img_logo_url + '.jpg',

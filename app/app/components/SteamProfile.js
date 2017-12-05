@@ -113,7 +113,8 @@ const SteamProfile = ({steam}) => {
     gameName: {
       color: 'white',
       opacity: 0.8,
-      fontSize: 15
+      fontSize: 15,
+      marginTop: 5
     }
 
   })
@@ -122,7 +123,7 @@ const SteamProfile = ({steam}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>STEAM</Text>
+      <Text style={styles.header}>Steam</Text>
 
       <View style={styles.basicStats}>
         <Image
