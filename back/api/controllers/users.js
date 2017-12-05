@@ -1,4 +1,4 @@
-* eslint-disable no-var, one-var s */
+/* eslint-disable no-var, one-var s */
 const express = require('express')
 const { Joi } = require('celebrate')
 const router = express.Router()
