@@ -148,7 +148,7 @@ const SteamProfile = ({steam}) => {
 
       </View>
 
-      <Text style={styles.subheader}>Jogos em Destaque</Text>
+      {steam.last2weeksgames.lenght > 0 ? <Text style={styles.subheader}>Jogos em Destaque</Text> : null}
 
       {steam.last2weeksgames.map(game => (
         <View key={game.appid}>

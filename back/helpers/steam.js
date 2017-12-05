@@ -46,24 +46,32 @@ module.exports = {
               combinedData['getPlayerGames'] = values[3]
               combinedData['getPlayerSteamLevel'] = values[4]
 
+              const games = combinedData.getRecentlyPlayedGames.response.games
+
               serviceProfile.steamInfo = combinedData.getPlayerSummaries.response.players[0]
               serviceProfile.steamInfo.timecreated = combinedData.getPlayerSummaries.response.players[0].timecreated
               serviceProfile.steamInfo.accountLevel = combinedData.getPlayerSteamLevel.response.player_level
               serviceProfile.steamInfo.accountAge = Math.floor(Math.abs(Math.round(new Date().getTime() / 1000.0) - serviceProfile.steamInfo.timecreated) / 86400 / 365)
               serviceProfile.steamInfo.numberOfGamesOwned = combinedData.getPlayerGames.response.game_count
               serviceProfile.steamInfo.numberOfHoursPlayed = combinedData.getPlayerGames.response.games.reduce((a, b) => { return a + b.playtime_forever }, 0) / 60 | 0
-              serviceProfile.last2weeksgames = [{
-                game_name: combinedData.getRecentlyPlayedGames.response.games[0].name,
-                game_photo: 'http://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[0].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[0].img_logo_url + '.jpg',
-                game_total_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_forever / 60 | 0,
-                game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_2weeks / 60 | 0
-              },
-              {
-                game_name: combinedData.getRecentlyPlayedGames.response.games[1].name,
-                game_photo: 'http://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[1].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[1].img_logo_url + '.jpg',
-                game_total_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_forever / 60 | 0,
-                game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_2weeks / 60 | 0
-              }]
+
+              if (games && games.lenght > 0) {
+                serviceProfile.last2weeksgames = [{
+                  game_name: combinedData.getRecentlyPlayedGames.response.games[0].name,
+                  game_photo: 'http://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[0].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[0].img_logo_url + '.jpg',
+                  game_total_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_forever / 60 | 0,
+                  game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_2weeks / 60 | 0
+                },
+                {
+                  game_name: combinedData.getRecentlyPlayedGames.response.games[1].name,
+                  game_photo: 'http://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[1].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[1].img_logo_url + '.jpg',
+                  game_total_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_forever / 60 | 0,
+                  game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_2weeks / 60 | 0
+                }]
+              } else {
+                serviceProfile.last2weeksgames = []
+              }
+
               serviceProfile.steamBans = combinedData.getPlayerBans.players[0]
               console.log('Fetched Steam information')
               callback(serviceProfile)
