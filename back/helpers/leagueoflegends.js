@@ -18,7 +18,6 @@ getSummonerId(summonerName) {
 
 getLolInfo(summonerName, summonerId, accountId, callback) {
     var serviceProfile = {};
-    console.log("entrounolol")
 
     var getSummonerByName = fetch('https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/'+summonerName+'?api_key='+key)
         .then(function(response) {

@@ -108,10 +108,13 @@ router.post('/login', celebrate({
       }
 
       var completedUser = {user}; //Perfil completo do usuário a ser retornado
-      const steamId = '76561197996048272'
-      const summonerName = 'coltshot'
-      const lolId = '647588'
-      const accountId = '663093'
+      let userInfo = JSON.stringify(completedUser);
+      userInfo = JSON.parse(userInfo) //Stringify e Parse porque javascript é zuado
+
+      const steamId = userInfo.user.steam_id
+      const summonerName = userInfo.user.summonerName
+      const lolId = userInfo.user.summonerId
+      const accountId = userInfo.user.accountId
       
       if (!steamId) {
         return res.json(completedUser)
@@ -123,10 +126,8 @@ router.post('/login', celebrate({
       }
 
       if (!lolId) {
-        console.log("deumerda")
         return res.json(completedUser)
       } else {
-        console.log("deubom")
         var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile)=>{
           completedUser.lolProfile = serviceProfile
           return res.json(completedUser)
