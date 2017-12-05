@@ -9,8 +9,8 @@ import { Constants } from 'expo'
 import { SearchBar } from 'react-native-elements'
 import { debounce } from 'lodash'
 import { AuthSession } from 'expo';
-
 import SearchResults from '../components/SearchResults';
+import ServicesConnections from '../components/ServicesConnections';
 
 // header : <Text style={{ backgroundColor : 'blue', height: Constants.statusBarHeight + 50 }}> Let there be light </Text>,
  
@@ -180,6 +180,9 @@ class Profile extends Component {
                             <Text> {this.state.searchFieldText} </Text>                
                         </View>
                     </View>
+
+                    <ServicesConnections steam={true} />
+
                     <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
 
                 </ScrollView>
