@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 
-const ConnectButton = ({ title, iconPath, onPress }) => {
+const ConnectButton = ({ title, icon, onPress }) => {
   const styles = StyleSheet.create({
     button: {
       backgroundColor: '#161616',
@@ -26,12 +26,14 @@ const ConnectButton = ({ title, iconPath, onPress }) => {
   })
 
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Image source={require(iconPath)} style={styles.buttonImage} />
-      <Text style={styles.buttonText}>
-        {title}
-      </Text>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
+        <Image source={icon} style={styles.buttonImage} />
+        <Text style={styles.buttonText}>
+          {title}
+        </Text>
+      </TouchableOpacity>
+    </View>
 
   )
 }

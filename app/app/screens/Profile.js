@@ -123,6 +123,8 @@ class Profile extends Component {
             }
         });
                 
+
+        const user = this.props.user;
     
         return (
             <View style={{flex:1}}>
@@ -181,7 +183,7 @@ class Profile extends Component {
                         </View>
                     </View>
 
-                    <ServicesConnections steam={true} />
+                    <ServicesConnections steam={user.steam_id === undefined} battlenet={user.battlenet_id === undefined} riot={user.riot_id === undefined}/>
 
                     <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
 
