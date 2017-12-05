@@ -52,7 +52,18 @@ module.exports = {
                 serviceProfile.steamInfo.accountAge = Math.floor(Math.abs(Math.round(new Date().getTime()/1000.0) - serviceProfile.steamInfo.timecreated) / 86400 / 365)
                 serviceProfile.steamInfo.numberOfGamesOwned = combinedData.getPlayerGames.response.game_count
                 serviceProfile.steamInfo.numberOfHoursPlayed = combinedData.getPlayerGames.response.games.reduce((a,b)=>{return a + b.playtime_forever},0)/60|0
-                serviceProfile.last2weeksgames = combinedData.getRecentlyPlayedGames.response.games
+                serviceProfile.last2weeksgames = [{
+                                                    game_name: combinedData.getRecentlyPlayedGames.response.games[0].name,
+                                                    game_photo: 'https://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[0].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[0].img_logo_url + '.jpg',
+                                                    game_total_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_forever / 60 | 0,
+                                                    game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[0].playtime_2weeks / 60 | 0
+                                                },
+                                                {
+                                                    game_name: combinedData.getRecentlyPlayedGames.response.games[1].name,
+                                                    game_photo: 'https://media.steampowered.com/steamcommunity/public/images/apps/' + combinedData.getRecentlyPlayedGames.response.games[1].appid + '/' + combinedData.getRecentlyPlayedGames.response.games[1].img_logo_url + '.jpg',
+                                                    game_total_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_forever / 60 | 0,
+                                                    game_2wks_hours: combinedData.getRecentlyPlayedGames.response.games[1].playtime_2weeks / 60 | 0
+                                                }]
                 serviceProfile.steamBans = combinedData.getPlayerBans.players[0]
                 console.log('Fetched Steam information')
                 callback(serviceProfile)
