@@ -9,8 +9,9 @@ import { Constants } from 'expo'
 import { SearchBar } from 'react-native-elements'
 import { debounce } from 'lodash'
 import { AuthSession } from 'expo';
+
 import SearchResults from '../components/SearchResults';
-import ServicesConnections from '../components/ServicesConnections';
+import { externalProfile } from '../reducers/reducers';
 
 // header : <Text style={{ backgroundColor : 'blue', height: Constants.statusBarHeight + 50 }}> Let there be light </Text>,
  
@@ -71,19 +72,19 @@ class Profile extends Component {
         }
     }
     
-
     componentWillMount(){
+        console.log('ISSO AQUI CATIORRO',this.props.navigation.state.params)
         let profileId = this.props.navigation.state.params._id
-        this.props.fetchProfile(profileId)
-        this.isSelf = this.props.user.username == this.props.navigation.state.params.username
+        this.props.fetchProfile(profileId,this.props.isSelf)
+        this.props.navigation.setParams({
+            onInputChange: this.onSearchBarChange.bind(this),
+            getSearchBar: this.getSearchBar.bind(this),
+            isSelf: this.props.isSelf
+        })          
     }
     
     componentDidMount(){
-        this.props.navigation.setParams({ 
-            onInputChange : this.onSearchBarChange.bind(this),
-            getSearchBar : this.getSearchBar.bind(this),
-            isSelf : this.isSelf
-        })          
+    
     }
     
     getSearchBar(bar){
@@ -140,7 +141,7 @@ class Profile extends Component {
                 >
 
                 <View style={{flex:1}}>
-                    <Text style={{color: 'white', alignSelf:'center'}}>{this.isSelf ? 'This is your Profile' : 'Not yours'}</Text>
+                    <Text style={{color: 'white', alignSelf:'center'}}>{this.props.isSelf ? 'This is your Profile' : 'Not yours'}</Text>
                 </View>
 
                     <View style={{height: 230, width: '100%'}}>
@@ -162,7 +163,7 @@ class Profile extends Component {
                     <View style={{ width: '100%',marginTop : 20}}>
                         <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Steam </Text>
                         <View style={{backgroundColor:'#36393e',height:150}}>
-                            <Button title='LOGIN TO STEAM'></Button>
+                            <Button onPress={()=>{}} title='LOGIN TO STEAM'></Button>
                             <Text> {this.state.searchFieldText} </Text>                
                         </View>
                     </View>
@@ -180,9 +181,6 @@ class Profile extends Component {
                             <Text> {this.state.searchFieldText} </Text>                
                         </View>
                     </View>
-
-                    <ServicesConnections steam={true} />
-
                     <Button title='Logout' onPress={() => {this.props.logout()}}></Button>
 
                 </ScrollView>
@@ -195,4 +193,14 @@ class Profile extends Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators,dispatch)
   }
-export default connect(mapStateToProps = (state,props) => { return { user : state.user }}, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps = (state,props) => {
+    let isOwner = false
+    if (props.navigation.state.params._id == state.user._id){
+        console.log('THIS IS YOUR OWN PROFILE!')
+        isOwner = true
+    }
+    return {
+        user : isOwner ? state.ownProfile : state.externalProfile,
+        self : state.user,
+        isSelf : isOwner
+     }}, mapDispatchToProps)(Profile);
