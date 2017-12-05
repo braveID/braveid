@@ -92,7 +92,6 @@ router.post('/login', celebrate({
 
 router.get('/:userId', (req, res) => {
   const { userId } = req.params
-  console.log('chamdo')
 
   User.findById(userId, (err, user) => {
     if (err || !user) {
@@ -202,7 +201,6 @@ router.post('/updateSteamID', celebrate({
 }), (req, res) => {
   const body = req.body
   User.insertSteamID(body._id, body.steam_id, (err, response) => {
-    console.log(err, response)
     if (err) {
       return res.json({
         ok: false,
@@ -224,7 +222,6 @@ router.post('/updateRiotID', celebrate({
 }), (req, res) => {
   const body = req.body
   User.insertRiotID(body._id, body.riot_id, (err, response) => {
-    console.log(err, response)
     if (err) {
       return res.json({
         ok: false,
