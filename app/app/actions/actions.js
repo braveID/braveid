@@ -9,42 +9,37 @@ export function increment () {
   }
 }
 
-export const fetchProfile = (id,isSelf) => async dispatch => {
-  dispatch({ type: 'REQUESTED_PROFILE', id : id })
-  console.log('Fetched profile for user id:',id)
+export const fetchProfile = (id, isSelf) => async dispatch => {
+  dispatch({ type: 'REQUESTED_PROFILE', id: id })
   try {
-    let res = await fetch(`${API_PATH}/users/${id}`,{
+    let res = await fetch(`${API_PATH}/users/${id}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      }
     })
-    console.log(res)
     res = await res.json()
-    console.log(res)
-
-    if (res.ok) {
+    if (res) {
       if (isSelf) {
         dispatch({
           type: 'FETCHED_OWN_PROFILE',
-          profile: res.response
+          profile: res
         })
       } else {
         dispatch({
           type: 'FETCHED_PROFILE',
-          profile: res.response
+          profile: res
         })
       }
+    } else {
+      console.log('OPA, USUÁRIO NÃO FOI ENCONTRADO', id, isSelf)
     }
-    console.log('OPA, USUÁRIO NÃO FOI ENCONTRADO', id, isSelf);
-    
   } catch (error) {
     console.log(error)
   }
 }
 
 export function navigate (screenName, params) {
-  console.log('Switching to', screenName, params)
   return {
     type: types.NAVIGATE,
     routeName: screenName,
@@ -66,18 +61,17 @@ export function logout () {
 }
 
 export const login = (userData) => async dispatch => {
-  dispatch({ type: 'LOGGING_IN' })  
+  dispatch({ type: 'LOGGING_IN' })
   dispatch(setUser(userData))
-  dispatch ({
+  dispatch({
     type: types.NAVIGATE,
     routeName: 'Profile',
-    params: {...userData,isSelf : true}
+    params: {...userData, isSelf: true}
   })
 }
 
-
 export const signUp = (fbData) => async dispatch => {
-  dispatch({ type: 'SIGNING_UP' })  
+  dispatch({ type: 'SIGNING_UP' })
   try {
     let res = await braveFetch('/users/signup', {
       facebook_id: fbData.id,
@@ -85,17 +79,17 @@ export const signUp = (fbData) => async dispatch => {
       real_name: fbData.name,
       profile_pic_url: fbData.photoURL
     })
-    
+
     res = await res.json()
-    console.log('SIGNUP RESULT',res)
-    dispatch(login(res.response)) 
+    console.log('SIGNUP RESULT', res)
+    dispatch(login(res.response))
   } catch (error) {
     console.log(error)
   }
 }
 
 export const onFacebookLogin = (fbData) => async dispatch => {
-  dispatch({ type : 'CHECKING_FACEBOOK_ID' })
+  dispatch({ type: 'CHECKING_FACEBOOK_ID' })
   try {
     let res = await braveFetch('/users/searchID', {
       facebook_id: fbData.id
@@ -109,8 +103,7 @@ export const onFacebookLogin = (fbData) => async dispatch => {
       // Usuário ja esta registrado, redireciona para o perfil
       dispatch(login(res.response))
     }
-
-  } catch(error) {
+  } catch (error) {
     console.log(error)
   }
 }

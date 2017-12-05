@@ -90,59 +90,56 @@ router.post('/login', celebrate({
   }
 })
 
-  router.get('/profile', celebrate({
-    query: Joi.object().keys({
-      user_id: Joi.string().required()
-    })
-  }), (req, res) => {
-    const { user_id } = req.query
+router.get('/:userId', (req, res) => {
+  const { userId } = req.params
+  console.log('chamdo')
 
-    User.findById(user_id, (err, user) => {
-      if (err || !user) {
-        return res.json({
-          ok: false,
-          error: 'Usuário não encontrado'
-        })
-      }
-
-      var completedUser = {user}; //Perfil completo do usuário a ser retornado
-      let userInfo = JSON.stringify(completedUser);
-      userInfo = JSON.parse(userInfo) //Stringify e Parse porque javascript é zuado
-
-      const steamId = userInfo.user.steam_id
-      const summonerName = userInfo.user.summonerName
-      const lolId = userInfo.user.summonerId
-      const accountId = userInfo.user.accountId
-
-      function requestServiceProfiles(callback) {
-        if (steamId) {
-          var steamData = steam.getSteamInfo(steamId, (serviceProfile)=>{
-            userInfo.steamProfile = serviceProfile
-            callback(userInfo)
-          })
-        } else {
-          userInfo.steamProfile = {}
-          callback(userInfo)
-        }
-  
-        if (lolId) {
-          var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile)=>{
-            userInfo.lolProfile = serviceProfile
-            callback(userInfo)
-          })
-        } else {
-          userInfo.lolProfile = {}
-          callback(userInfo)
-        }
-      }
-
-      var sendData = requestServiceProfiles((userInfo)=>{
-        if (userInfo.steamProfile && userInfo.lolProfile) {
-          return res.json(userInfo)
-        }
+  User.findById(userId, (err, user) => {
+    if (err || !user) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
       })
+    }
+
+    var completedUser = user // Perfil completo do usuário a ser retornado
+    let userInfo = JSON.stringify(completedUser)
+    userInfo = JSON.parse(userInfo) // Stringify e Parse porque javascript é zuado
+
+    const steamId = userInfo.steam_id
+    const summonerName = userInfo.summonerName
+    const lolId = userInfo.summonerId
+    const accountId = userInfo.accountId
+
+    function requestServiceProfiles (callback) {
+      if (steamId) {
+        var steamData = steam.getSteamInfo(steamId, (serviceProfile) => {
+          userInfo.steamProfile = serviceProfile
+          callback(userInfo)
+        })
+      } else {
+        userInfo.steamProfile = {}
+        callback(userInfo)
+      }
+
+      if (lolId) {
+        var lolData = lol.getLolInfo(summonerName, lolId, accountId, (serviceProfile) => {
+          userInfo.lolProfile = serviceProfile
+          callback(userInfo)
+        })
+      } else {
+        userInfo.lolProfile = {}
+        callback(userInfo)
+      }
+    }
+
+    var sendData = requestServiceProfiles((userInfo) => {
+      if (userInfo.steamProfile && userInfo.lolProfile) {
+        return res.json(userInfo)
+      }
+    })
   })
-});
+})
 
 // Rota que busca usuario pelo facebook ID
 router.post('/searchID', celebrate({
@@ -240,20 +237,4 @@ router.post('/updateRiotID', celebrate({
   })
 })
 
-router.get('/:userId', (req, res) => {
-  User.findById(req.params.userId, (err, response) => {
-    if (err || !response) {
-      return res.json({
-        ok: false,
-        error: 'Usuário não encontrado'
-      })
-    }
-    return res.json({
-      ok: true,
-      response})
-  })
-})
-  
-
-
-module.exports = router;
+module.exports = router

@@ -128,52 +128,8 @@ class Profile extends Component {
                 
 
         const user = this.props.user;
-
-        const mock = {
-            "steamProfile": {
-                "steamInfo": {
-                    "steamid": "76561197996048272",
-                    "communityvisibilitystate": 3,
-                    "profilestate": 1,
-                    "personaname": "Coltshot",
-                    "lastlogoff": 1512417258,
-                    "profileurl": "http://steamcommunity.com/profiles/76561197996048272/",
-                    "avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/68/68dea3bb2fd17369b1391de60d18a89663af37c8.jpg",
-                    "avatarmedium": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/68/68dea3bb2fd17369b1391de60d18a89663af37c8_medium.jpg",
-                    "avatarfull": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/68/68dea3bb2fd17369b1391de60d18a89663af37c8_full.jpg",
-                    "personastate": 1,
-                    "primaryclanid": "103582791439078705",
-                    "timecreated": 1201045927,
-                    "personastateflags": 0,
-                    "loccountrycode": "BR",
-                    "accountLevel": 11,
-                    "accountAge": 9,
-                    "numberOfGamesOwned": 74,
-                    "numberOfHoursPlayed": 2964
-                },
-                "last2weeksgames": [
-                    {
-                        "appid": 730,
-                        "name": "Counter-Strike: Global Offensive",
-                        "playtime_2weeks": 430,
-                        "playtime_forever": 92161,
-                        "img_icon_url": "69f7ebe2735c366c65c0b33dae00e12dc40edbe4",
-                        "img_logo_url": "http://media.steampowered.com/steamcommunity/public/images/apps/730/d0595ff02f5c79fd19b06f4d6165c3fda2372820.jpg"
-                    },
-                    {
-                        "appid": 578080,
-                        "name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
-                        "playtime_2weeks": 249,
-                        "playtime_forever": 8396,
-                        "img_icon_url": "93d896e7d7a42ae35c1d77239430e1d90bc82cae",
-                        "img_logo_url": "http://media.steampowered.com/steamcommunity/public/images/apps/578080/2d2732a33511b58c69aff6b098a22687a3bb8533.jpg"
-                    }
-                ], 
-        }
-    }
-
-    user.steamProfile = mock.steamProfile
-    
+        console.log(user);
+        
         return (
             <View style={{flex:1}}>
                 <StatusBar
@@ -210,20 +166,9 @@ class Profile extends Component {
                     </View>
 
 
-                    { user.steamProfile ? <SteamProfile steam={user.steamProfile}/> : null }
+                    { user.steam_id && user.steamProfile ? <SteamProfile steam={user.steamProfile}/> : null }
 
-                    { user.battlenet ? 
-                        <View style={{ width: '100%'}}>
-                            <Text style={{color : magenta, fontSize: 40, fontWeight: 'bold', left:10}}> Battle.NET </Text>
-                            <View style={{backgroundColor:'#36393e',height:150}}>
-                                <Text> {this.state.searchFieldText} </Text>                
-                            </View>
-                        </View>
-                        : null
-                    }
-
-
-                    { user.lol ? 
+                    { user.lol_id && user.lolProfile ? 
                         <View style={{ width: '100%' }}>
                             <Text style={{ color: magenta, fontSize: 35, fontWeight: 'bold', left: 10 }}> League Of Legends </Text>
                             <View style={{ backgroundColor: '#36393e', height: 150 }}>
@@ -258,7 +203,6 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps = (state,props) => {
     let isOwner = false
     if (props.navigation.state.params._id == state.user._id){
-        console.log('THIS IS YOUR OWN PROFILE!')
         isOwner = true
     }
     return {

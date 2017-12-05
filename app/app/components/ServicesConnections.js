@@ -15,8 +15,6 @@ const ServicesConnections = ({ steam, battlenet, riot }) => {
       justifyContent: 'space-between'
     }
   })
-  console.log('fui chamado')
-
   const t = () => console.log('hey')
 
   return (

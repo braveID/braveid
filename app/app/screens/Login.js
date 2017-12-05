@@ -52,11 +52,6 @@ class Profile extends Component {
                     barStyle="light-content"
                 />
                 <Text style={{color : 'white', fontSize: 50, bottom : 150, fontWeight : 'bold'}}> BraveID </Text>
-                {/* <Button title='btn' onPress={() => {this.incrementCount()}}> Clica aqui </Button> */}
-                {/* <Button title='NAVIGATE' onPress={() => {this.props.navigate('Home',{ id : 'EAE'})}}></Button> */}
-                <Button title='LOGIN' onPress={() => { 
-                    this.props.navigate('Profile',this.props.user)
-                }}/>
                 <SocialIcon
                     title='Sign In With Facebook'
                     button

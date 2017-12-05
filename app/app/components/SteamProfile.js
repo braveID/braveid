@@ -118,6 +118,8 @@ const SteamProfile = ({steam}) => {
 
   })
 
+  console.log(steam)
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>STEAM</Text>
@@ -150,21 +152,21 @@ const SteamProfile = ({steam}) => {
 
       {steam.last2weeksgames.map(game => (
         <View key={game.appid}>
-          <Text style={styles.gameName}>{game.name.toUpperCase()}</Text>
+          <Text style={styles.gameName}>{game.game_name.toUpperCase()}</Text>
           <View style={styles.featuredGameContainer}>
             <Image
               style={styles.featuredGamePic}
-              source={{uri: game.img_logo_url}} />
+              source={{uri: game.game_photo}} />
 
             <View style={styles.featuredGameStats}>
               <View style={styles.featuredGameNumbers}>
-                <Text style={styles.featuredGameNumbersAccent}>{game.playtime_2weeks}h</Text>
+                <Text style={styles.featuredGameNumbersAccent}>{game.game_2wks_hours}h</Text>
                 <Text style={styles.featuredGameNumbersDescription}>2 SEMANAS</Text>
               </View>
               <View style={styles.verticalDivider} />
 
               <View style={styles.featuredGameNumbers}>
-                <Text style={styles.featuredGameNumbersAccent}>{game.playtime_forever}h</Text>
+                <Text style={styles.featuredGameNumbersAccent}>{game.game_total_hours}h</Text>
                 <Text style={styles.featuredGameNumbersDescription}>TOTAL</Text>
               </View>
             </View>
