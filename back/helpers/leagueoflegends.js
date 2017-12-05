@@ -5,7 +5,7 @@ const key = 'RGAPI-e127b4fa-7f69-436a-a19d-4d76c30e83c8';
 
 module.exports = {
 //para que todos os outros rodem, precisa do summonerID, entao vamos rodar antes
-getSummonerId(summonerName) {
+getSummonerId(summonerName, callback) {
     var serviceProfile = {};
     fetch('https://br1.api.riotgames.com/lol/summoner/v3/summoners/by-name/'+summonerName+'?api_key='+key)
     .then(res => res.json())
@@ -13,7 +13,9 @@ getSummonerId(summonerName) {
         serviceProfile.nickName  = res.name
         serviceProfile.serviceId = res.id
         serviceProfile.serviceSecondaryId = res.accountId
+        callback(serviceProfile)
     })
+    return serviceProfile();
 },
 
 getLolInfo(summonerName, summonerId, accountId, callback) {

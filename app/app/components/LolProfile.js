@@ -1,5 +1,6 @@
 import React from 'react'
 import { Image, Text, View, StyleSheet } from 'react-native'
+const fetch = require('node-fetch')
 
 const LolProfile = ({lol}) => {
   const styles = StyleSheet.create({
@@ -118,6 +119,17 @@ const LolProfile = ({lol}) => {
 
   })
 
+  function getChampionById(championId){
+    var lastPlayedChampion = {};
+    fetch('https://br1.api.riotgames.com/lol/static-data/v3/champions/'+championId+'?locale=pt_BR&api_key='+key)
+    .then(res => res.json())
+    .then(res => {
+        lastPlayedChampion = res
+        lastPlayedChampion.championImg = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/'+res.name+'.png'
+        return lastPlayedChampion;
+    })};
+
+  var lastPlayedChampion = getChampionById(lol.lastmatch.champion)
   return (
     <View style={styles.container}>
       <Text style={styles.header}>League of Legends</Text>
@@ -149,6 +161,10 @@ const LolProfile = ({lol}) => {
         <View style={styles.numericContent}>
             <Text style={styles.numericContentAccent}>{lol.ranked.rank}</Text>
         </View>
+     
+        <Image
+          style={styles.profilePic}
+          source={{uri: lastPlayedChampion.championImg}} />
 
 
     </View>
