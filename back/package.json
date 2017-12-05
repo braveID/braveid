@@ -5,6 +5,10 @@
   "main": "index.js",
   "author": "Marcelo Prado",
   "license": "ISC",
+  "scripts": {
+    "start": "pm2-dev start server.js",
+    "production": "export NODE_ENV=production && pm2 start server.js -i max"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "celebrate": "^7.0.2",
