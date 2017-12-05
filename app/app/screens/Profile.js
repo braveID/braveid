@@ -201,7 +201,6 @@ class Profile extends Component {
                             battlenet={user.battlenet_id === undefined} 
                             riot={user.riot_id === undefined}
                         /> : null
-
                     }
 
                     

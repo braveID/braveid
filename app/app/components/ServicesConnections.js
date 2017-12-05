@@ -5,7 +5,7 @@ import steamIcon from '../assets/steam.png'
 import battlenetIcon from '../assets/battlenet.png'
 import riotIcon from '../assets/riot.png'
 
-const SearchResultCell = ({ steam, battlenet, riot }) => {
+const ServicesConnections = ({ steam, battlenet, riot }) => {
   const styles = StyleSheet.create({
     container: {
       padding: 20,
@@ -15,10 +15,13 @@ const SearchResultCell = ({ steam, battlenet, riot }) => {
       justifyContent: 'space-between'
     }
   })
+  console.log('fui chamado')
+
+  const t = () => console.log('hey')
 
   return (
     <View style={styles.container}>
-      { steam ? <ConnectButton title='Conectar com Steam' icon={steamIcon} onPress={() => console.log('called')} /> : null}
+      { steam ? <ConnectButton title='Conectar com Steam' icon={steamIcon} onPress={t} /> : null}
       { battlenet ? <ConnectButton title='Conectar com BattleNet' icon={battlenetIcon} /> : null}
       { riot ? <ConnectButton title='Conectar com Riot' icon={riotIcon} /> : null}
     </View>
@@ -26,4 +29,4 @@ const SearchResultCell = ({ steam, battlenet, riot }) => {
   )
 }
 
-export default SearchResultCell
+export default ServicesConnections
