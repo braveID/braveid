@@ -183,5 +183,20 @@ router.post('/updateRiotID', celebrate({
   })
 })
 
+router.get('/:userId', (req, res) => {
+  User.findById(req.params.userId, (err, response) => {
+    if (err || !response) {
+      return res.json({
+        ok: false,
+        error: 'Usuário não encontrado'
+      })
+    }
+    return res.json({
+      ok: true,
+      response})
+  })
+})
+  
+
 
 module.exports = router
